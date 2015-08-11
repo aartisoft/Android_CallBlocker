@@ -1,7 +1,6 @@
-package activity.masum.com.smsblock;
+package com.codersact.smsblock.main;
 
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -16,12 +15,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.coderslab.smsblock.adapter.NavigationAdapter;
-import com.coderslab.smsblock.blacklist.BlackListFragment;
-import com.coderslab.smsblock.blockedsms.BlockedListFragment;
-import com.coderslab.smsblock.inbox.InboxFragment;
+import com.codersact.smsblock.adapter.NavigationAdapter;
+import com.codersact.smsblock.blacklist.BlackListFragment;
+import com.codersact.smsblock.blockedsms.BlockedListFragment;
+import com.codersact.smsblock.inbox.InboxFragment;
+import com.codersact.smsblock.model.NavigationMenu;
 
 import java.util.ArrayList;
+
+import activity.masum.com.smsblock.R;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {

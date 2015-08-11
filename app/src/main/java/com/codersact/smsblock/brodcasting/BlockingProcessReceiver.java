@@ -1,4 +1,4 @@
-package activity.masum.com.smsblock;
+package com.codersact.smsblock.brodcasting;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;

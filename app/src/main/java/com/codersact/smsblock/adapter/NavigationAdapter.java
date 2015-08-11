@@ -1,4 +1,4 @@
-package com.coderslab.smsblock.adapter;
+package com.codersact.smsblock.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import activity.masum.com.smsblock.NavigationMenu;
+import com.codersact.smsblock.model.NavigationMenu;
 import activity.masum.com.smsblock.R;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {

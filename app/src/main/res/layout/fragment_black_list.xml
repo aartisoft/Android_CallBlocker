@@ -18,23 +18,10 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btnFetchSMS"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/btnBlockedList"
-            android:layout_toStartOf="@+id/btnBlockedList"
             android:gravity="center"
-            android:text="BLACK LIST" />
-
-        <Button
-            android:id="@+id/btnFetchSMS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:text="BLACK LIST"
             android:layout_alignParentTop="true"
-            android:text="Add New" />
+            android:layout_centerHorizontal="true" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -54,13 +41,5 @@
             android:layout_marginRight="20dp"
             android:src="@drawable/about" />
 
-        <Button
-            android:id="@+id/btnBlockedList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnFetchSMS"
-            android:layout_toLeftOf="@+id/btnFetchSMS"
-            android:layout_toStartOf="@+id/btnFetchSMS"
-            android:text="Blocked List" />
     </RelativeLayout>
 </RelativeLayout>

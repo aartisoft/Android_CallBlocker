@@ -1,4 +1,4 @@
-package activity.masum.com.smsblock;
+package com.codersact.smsblock.model;
 
 /**
  * Created by masum on 10/08/2015.

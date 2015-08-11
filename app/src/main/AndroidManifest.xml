@@ -35,7 +35,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.codersact.smsblock.main.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".BlockingProcessReceiver" >
+        <receiver android:name="com.codersact.smsblock.brodcasting.BlockingProcessReceiver" >
             <intent-filter android:priority="100" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" >
                 </action>

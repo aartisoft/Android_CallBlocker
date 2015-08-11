@@ -1,7 +1,6 @@
-package com.coderslab.smsblock.blacklist;
+package com.codersact.smsblock.blockedsms;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,16 +10,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import java.util.ArrayList;
 
-import com.coderslab.smsblock.adapter.MyAdapter;
-import activity.masum.com.smsblock.R;
-import activity.masum.com.smsblock.SmsData;
 
-public class BlackListFragment extends Fragment implements View.OnClickListener {
-    Button btnFetchSMS;
-    Button btnBlockedList;
+import com.codersact.smsblock.adapter.MyAdapter;
+import activity.masum.com.smsblock.R;
+import com.codersact.smsblock.model.SmsData;
+
+public class BlockedListFragment extends Fragment implements View.OnClickListener {
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
     ArrayList<SmsData> smsDatas = new ArrayList<>();
@@ -28,7 +26,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_black_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_blocked_list, container, false);
         initView(rootView);
         fetchBlackList();
         MyAdapter mAdapter = new MyAdapter(smsDatas, getActivity());
@@ -37,12 +35,6 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initView(View rootView) {
-        btnFetchSMS = (Button) rootView.findViewById(R.id.btnFetchSMS);
-        btnBlockedList = (Button) rootView.findViewById(R.id.btnBlockedList);
-
-        btnFetchSMS.setOnClickListener(this);
-        btnBlockedList.setOnClickListener(this);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -55,7 +47,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
         SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
 
         //Check, if the "fromAddr" exists in the BlackListDB
-        Cursor c = db.query("SMS_BlackList", null, null, null, null, null, null);
+        Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
         //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
 
         if (c.moveToFirst() && c.getCount() > 0) {
@@ -63,6 +55,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
                 SmsData smsData = new SmsData();
                 smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
                 smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
+                smsData.setSmsString(c.getString(c.getColumnIndex("names")));
                 smsDatas.add(smsData);
                 c.moveToNext();
             }
@@ -72,7 +65,6 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
         }
 
         db.close();
-
         return;
     }
 
@@ -107,7 +99,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.btnBlockedList:
-                /*Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
+               /* Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
                 startActivity(intent1);*/
                 break;
         }

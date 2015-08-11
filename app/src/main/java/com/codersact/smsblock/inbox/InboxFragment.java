@@ -1,25 +1,28 @@
-package com.coderslab.smsblock.blockedsms;
+package com.codersact.smsblock.inbox;
 
 import android.app.Fragment;
-import android.content.Intent;
+import android.content.ContentResolver;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
-
-import com.coderslab.smsblock.adapter.MyAdapter;
+import com.codersact.smsblock.adapter.MyAdapter;
 import activity.masum.com.smsblock.R;
-import activity.masum.com.smsblock.SmsData;
+import com.codersact.smsblock.model.SmsData;
 
-public class BlockedListFragment extends Fragment implements View.OnClickListener {
+public class InboxFragment extends Fragment implements View.OnClickListener {
+    Button btnFetchSMS;
+    Button btnBlockedList;
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
     ArrayList<SmsData> smsDatas = new ArrayList<>();
@@ -27,15 +30,21 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_blocked_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_inbox_sms, container, false);
         initView(rootView);
-        fetchBlackList();
+        fetchInboxSms();
         MyAdapter mAdapter = new MyAdapter(smsDatas, getActivity());
         recyclerView.setAdapter(mAdapter);
         return rootView;
     }
 
     private void initView(View rootView) {
+        btnFetchSMS = (Button) rootView.findViewById(R.id.btnFetchSMS);
+        btnBlockedList = (Button) rootView.findViewById(R.id.btnBlockedList);
+
+        btnFetchSMS.setOnClickListener(this);
+        btnBlockedList.setOnClickListener(this);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -43,30 +52,51 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void fetchBlackList() {
-        //Create a cursor for the "SMS_BlackList" table
-        SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+    public void fetchInboxSms() {
+        // Create Inbox box URI
+        Uri inboxURI = Uri.parse("content://sms/inbox");
 
-        //Check, if the "fromAddr" exists in the BlackListDB
-        Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
-        //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
+        // List required columns
+        String[] reqCols = new String[]{"_id", "address", "body", "thread_id"};
 
-        if (c.moveToFirst() && c.getCount() > 0) {
-            while (!c.isAfterLast()) {
+        // Get Content Resolver object, which will deal with Content Provider
+        ContentResolver cr = getActivity().getContentResolver();
+
+        // Fetch Inbox SMS Message from Built-in Content Provider
+        Cursor c = cr.query(inboxURI, reqCols, null, null, null);
+
+
+        if (c.moveToFirst()) { // must check the result to prevent exception
+            do {
+                String msgData = "";
                 SmsData smsData = new SmsData();
-                smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
-                smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
-                smsData.setSmsString(c.getString(c.getColumnIndex("names")));
+
+                for(int idx=0;idx<c.getColumnCount();idx++)
+                {
+                    msgData += "****" + c.getColumnName(idx) + ":" + c.getString(idx);
+                    Log.i("***mm", "*** " + msgData);
+
+                    if (idx == 1) {
+                        smsData.setSmsAddress(c.getString(idx));
+                    }
+
+                    if (idx == 3) {
+                        smsData.setSmsNo(c.getString(idx));
+                    }
+
+                }
+
+                smsData.setSmsString(msgData);
                 smsDatas.add(smsData);
-                c.moveToNext();
-            }
 
-            c.close();
-
+                // use msgData
+            } while (c.moveToNext());
+        } else {
+            // empty box, no SMS
         }
-
-        db.close();
-        return;
+       /* for (int i = 0; i < c.getCount(); i++) {
+            Log.i("Value ", "id:" + c.address);
+        }*/
     }
 
    /* @Override
@@ -100,7 +130,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.btnBlockedList:
-               /* Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
+                /*Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
                 startActivity(intent1);*/
                 break;
         }

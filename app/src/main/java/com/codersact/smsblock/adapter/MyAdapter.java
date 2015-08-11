@@ -1,4 +1,4 @@
-package com.coderslab.smsblock.adapter;
+package com.codersact.smsblock.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import activity.masum.com.smsblock.R;
-import activity.masum.com.smsblock.SmsData;
+import com.codersact.smsblock.model.SmsData;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<SmsData> mDataset = new ArrayList<>();
@@ -63,23 +63,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 addToSMSBlacklist("Thread " + mDataset.get(position).getSmsNo(), mDataset.get(position).getSmsAddress());
-                /*Uri inbox = Uri.parse("content://sms/inbox");
-                Cursor c = context.getContentResolver().query(inbox, null, null, null, "date desc");
 
-                Log.i("Timer Task", (c == null) + "  " + c.moveToFirst());
-                if (c == null || !c.moveToFirst()) {
-                    c.close();
-                    return;
-                }
-
-                Log.i("Timer Task", "Delete IN PROGRESS");
-                String from = c.getString(c.getColumnIndex("address"));
-                c.close();*/
-
-                // Its Working....
-               /* Toast.makeText(context, mDataset.get(position).getSmsString(), Toast.LENGTH_SHORT).show();
-                context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + mDataset.get(position).getSmsNo()), null, null);
-                deleteItem(position);*/
             }
         });
 
