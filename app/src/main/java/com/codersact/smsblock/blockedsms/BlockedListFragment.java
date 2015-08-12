@@ -1,8 +1,6 @@
 package com.codersact.smsblock.blockedsms;
 
 import android.app.Fragment;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,18 +16,19 @@ import com.codersact.smsblock.adapter.MyAdapter;
 import activity.masum.com.smsblock.R;
 import com.codersact.smsblock.model.SmsData;
 
-public class BlockedListFragment extends Fragment implements View.OnClickListener {
+public class BlockedListFragment extends Fragment implements View.OnClickListener, BlockedListView {
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
     ArrayList<SmsData> smsDatas = new ArrayList<>();
+    BlockedListPresenter blockedListPresenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_blocked_list, container, false);
         initView(rootView);
-        fetchBlackList();
-        MyAdapter mAdapter = new MyAdapter(smsDatas, getActivity());
+        blockedListPresenter = new BlockedListPresenter(this, new BlockedListService());
+        MyAdapter mAdapter = new MyAdapter(blockedListPresenter.onFetchClick(), getActivity());
         recyclerView.setAdapter(mAdapter);
         return rootView;
     }
@@ -42,31 +41,36 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void fetchBlackList() {
-        //Create a cursor for the "SMS_BlackList" table
-        SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+    /*private void fetchBlockedkList() {
+        try {
+            //Create a cursor for the "SMS_BlackList" table
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
 
-        //Check, if the "fromAddr" exists in the BlackListDB
-        Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
-        //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
+            //Check, if the "fromAddr" exists in the BlackListDB
+            Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
+            //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
 
-        if (c.moveToFirst() && c.getCount() > 0) {
-            while (!c.isAfterLast()) {
-                SmsData smsData = new SmsData();
-                smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
-                smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
-                smsData.setSmsString(c.getString(c.getColumnIndex("names")));
-                smsDatas.add(smsData);
-                c.moveToNext();
+            if (c.moveToFirst() && c.getCount() > 0) {
+                while (!c.isAfterLast()) {
+                    SmsData smsData = new SmsData();
+                    smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
+                    smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
+                    smsData.setSmsString(c.getString(c.getColumnIndex("names")));
+                    smsDatas.add(smsData);
+                    c.moveToNext();
+                }
+
+                c.close();
+
             }
 
-            c.close();
+            db.close();
+        } catch (Exception e) {
 
         }
 
-        db.close();
         return;
-    }
+    }*/
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,15 +97,30 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnFetchSMS:
-                /*Intent intent = new Intent(getActivity(), BlackListActivity.class);
-                startActivity(intent);*/
+            /*case R.id.btnFetchSMS:
+                *//*Intent intent = new Intent(getActivity(), BlackListActivity.class);
+                startActivity(intent);*//*
                 break;
 
             case R.id.btnBlockedList:
-               /* Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
-                startActivity(intent1);*/
-                break;
+               *//* Intent intent1 = new Intent(getActivity(), BlockedListActivity.class);
+                startActivity(intent1);*//*
+                break;*/
         }
+    }
+
+    @Override
+    public void getSmsInfo() {
+
+    }
+
+    @Override
+    public String getSmsName() {
+        return null;
+    }
+
+    @Override
+    public String getSmsNumber() {
+        return null;
     }
 }

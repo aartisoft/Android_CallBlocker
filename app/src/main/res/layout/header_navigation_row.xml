@@ -6,48 +6,41 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:text="Easy SMS Blocker"
             android:textColor="#ffffff"
-            android:text="Nazmul Hasan Masum"
             android:textSize="14sp"
-            android:textStyle="bold"
-
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="5dp"
-            android:text="mnhmasum@gmail.com"
+            android:text="be free from annoying sms :)"
+            android:textColor="#ffffff"
             android:textSize="14sp"
-            android:textStyle="normal"
-
-            />
+            android:textStyle="normal" />
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/circleView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/about"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:id="@+id/circleView"
-        />
+        android:src="@drawable/about" />
 </RelativeLayout>

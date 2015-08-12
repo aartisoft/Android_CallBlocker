@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.codersact.smsblock.adapter.NavigationAdapter;
 import com.codersact.smsblock.blacklist.BlackListFragment;
@@ -94,8 +93,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         settingsFragment();
                     }
 
-
-                    Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
                     return true;
 
                 }
@@ -219,15 +217,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnFetchSMS:
-                /*Intent intent = new Intent(this, BlackListActivity.class);
-                startActivity(intent);*/
+           /* case R.id.btnFetchSMS:
+                *//*Intent intent = new Intent(this, BlackListActivity.class);
+                startActivity(intent);*//*
                 break;
 
             case R.id.btnBlockedList:
-               /* Intent intent1 = new Intent(this, BlockedListActivity.class);
-                startActivity(intent1);*/
-                break;
+               *//* Intent intent1 = new Intent(this, BlockedListActivity.class);
+                startActivity(intent1);*//*
+                break;*/
         }
     }
 

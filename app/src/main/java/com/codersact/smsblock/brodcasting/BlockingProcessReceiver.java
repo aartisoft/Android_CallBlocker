@@ -60,35 +60,41 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 	 */
 
     protected void incommingBlockedSMS(Context context, String name, String number, String body) {
-        if (name.length() == 0 || number.length() == 0) {
-            Toast.makeText(context, "Please fill up both the fields", Toast.LENGTH_LONG);
-            return;
+
+        try {
+            SQLiteDatabase db;
+            db = context.openOrCreateDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+            db.setVersion(1);
+            db.setLocale(Locale.getDefault());
+            db.setLockingEnabled(true);
+            db.execSQL("create table IF NOT EXISTS sms_blocked(names varchar(20) UNIQUE, numbers varchar(20), body varchar(250))");
+
+            // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
+            ContentValues values = new ContentValues();
+            values.put("names", number);
+            values.put("numbers", number);
+            values.put("body", body);
+            db.insert("sms_blocked", null, values);
+            db.close();
+
+        } catch (Exception e) {
+            Log.d("addToSMS_BlackList", "4: blockingCodeForSMS ");
+            Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");
+            Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_LONG).show();
+
         }
 
-        SQLiteDatabase db;
-        db = context.openOrCreateDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        db.setVersion(1);
-        db.setLocale(Locale.getDefault());
-        db.setLockingEnabled(true);
-        db.execSQL("create table IF NOT EXISTS sms_blocked(names varchar(20) UNIQUE, numbers varchar(20))");
 
-        // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
-        ContentValues values = new ContentValues();
-        values.put("names", body);
-        values.put("numbers", number);
+
+      /*  return;
         if (db.insert("sms_blocked", null, values) == -1){
             Log.d("addToSMS_BlackList", "3: blockingCodeForSMS ");
             Toast.makeText(context, name + " already exist in database\n Please try a new name!!", Toast.LENGTH_LONG).show();
             db.close();
             return;
         }
+*/
 
-        Log.d("addToSMS_BlackList", "4: blockingCodeForSMS ");
-        Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");
-
-        db.close();
-        Toast.makeText(context, name+" added to SMS blacklist", Toast.LENGTH_LONG).show();
-        //finish();
     }
 
     private void ifBlockedDeleteSMS(final String fromAddr, final Long threadId, final Context context, String body) {
