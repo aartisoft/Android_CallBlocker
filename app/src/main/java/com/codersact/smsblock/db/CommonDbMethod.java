@@ -23,8 +23,8 @@ public class CommonDbMethod {
     }
 
     public void addToSMSBlacklist(String name, String number, String body) {
-        if (name.length() == 0 || number.length() == 0) {
-            Toast.makeText(context, "Please fill up both the fields", Toast.LENGTH_LONG);
+        if (number.length() == 0) {
+            Toast.makeText(context, "Please fill up both the fields", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -52,7 +52,7 @@ public class CommonDbMethod {
         Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");
 
         db.close();
-        Toast.makeText(context, name+" added to SMS blacklist", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, number +" is added to blacklist", Toast.LENGTH_LONG).show();
         //finish();
     }
 

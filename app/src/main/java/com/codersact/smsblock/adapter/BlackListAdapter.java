@@ -60,7 +60,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,mDataset.get(position).getSmsAddress()  +  " Position " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,mDataset.get(position).getSmsAddress()  +  " Position " + position, Toast.LENGTH_SHORT).show();
                 deleteItem(position);
             }
         });

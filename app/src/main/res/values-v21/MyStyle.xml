@@ -9,4 +9,13 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
+    <style name="AlertDialogCustom.Destructive">
+        <item name="android:buttonBarPositiveButtonStyle">@style/DestructiveButton</item>
+    </style>
+
+    <style name="DestructiveButton"
+        parent="android:Widget.DeviceDefault.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>
