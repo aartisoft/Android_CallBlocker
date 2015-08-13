@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:text="Click + button to add sender"
+            android:text="Click + button to add sender."
             android:id="@+id/txtViewInstruction" />
     </RelativeLayout>
 </RelativeLayout>
