@@ -29,6 +29,7 @@ import com.codersact.smsblock.db.CommonDbMethod;
 import com.codersact.smsblock.inbox.InboxService;
 import com.codersact.smsblock.model.NumberData;
 import com.codersact.smsblock.model.SmsData;
+import com.codersact.smsblock.utility.UtilityMethod;
 
 import java.util.ArrayList;
 
@@ -113,16 +114,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         return null;
     }
 
-    private void blackListFragment() {
-        android.app.Fragment fragment = null;
-        fragment = new BlackListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        FragmentManager frgManager = getFragmentManager();
-        android.app.FragmentTransaction ft = frgManager.beginTransaction();
-        ft.replace(R.id.content_frame, fragment, "SEARCH_FRAGMENT");
-        ft.commit();
-    }
+
 
     private void openActionDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom_Destructive);
@@ -178,7 +170,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
             public void onClick(View v) {
                 new CommonDbMethod(getActivity()).addToSMSBlacklist("", editText.getText().toString().trim(), "");
                 dialog.dismiss();
-                blackListFragment();
+                UtilityMethod.blackListFragment(getActivity());
             }
 
         });
@@ -230,7 +222,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
-                blackListFragment();
+                UtilityMethod.blackListFragment(getActivity());;
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -33,7 +33,7 @@ public class CommonDbMethod {
         db.setVersion(1);
         db.setLocale(Locale.getDefault());
         db.setLockingEnabled(true);
-        db.execSQL("create table IF NOT EXISTS SMS_BlackList(names varchar(20) UNIQUE, numbers varchar(20) UNIQUE, body varchar(250))");
+        db.execSQL("create table IF NOT EXISTS SMS_BlackList(names varchar(20), numbers varchar(20) UNIQUE, body varchar(250))");
 
         // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
         ContentValues values = new ContentValues();

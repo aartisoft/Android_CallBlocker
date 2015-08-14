@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private CharSequence mTitle;
     DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    ArrayList<NavigationMenu> navigationMenus;
 
     //New
     private Toolbar mToolbar;
@@ -82,15 +83,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     if (recyclerView.getChildPosition(child) == 1) {
                         blackListFragment();
+                        setTitle(navigationMenus.get(1).getMenuName());
 
                     } else if (recyclerView.getChildPosition(child) == 2) {
                         logsFragment();
+                        setTitle(navigationMenus.get(2).getMenuName());
 
                     } else if (recyclerView.getChildPosition(child) == 3) {
                         inboxFragment();
+                        setTitle(navigationMenus.get(3).getMenuName());
 
                     } else if (recyclerView.getChildPosition(child) == 4) {
                         settingsFragment();
+                        setTitle(navigationMenus.get(4).getMenuName());
                     }
 
                     //Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
@@ -114,7 +119,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void initView() {
-        ArrayList<NavigationMenu> navigationMenus = new ArrayList<>();
+        navigationMenus = new ArrayList<>();
 
         NavigationMenu navigationMenu = new NavigationMenu();
         navigationMenu.setMenuName("Header");
@@ -132,9 +137,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         navigationMenu3.setMenuName("Inbox");
         navigationMenus.add(navigationMenu3);
 
-        NavigationMenu navigationMenu4 = new NavigationMenu();
-        navigationMenu4.setMenuName("Settings");
-        navigationMenus.add(navigationMenu4);
+//        NavigationMenu navigationMenu4 = new NavigationMenu();
+//        navigationMenu4.setMenuName("Settings");
+//        navigationMenus.add(navigationMenu4);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationRecylerView = (RecyclerView) findViewById(R.id.listView);
@@ -232,7 +237,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void setTitle(CharSequence title) {
        // mTitle = title;
-        getActionBar().setTitle(title);
+        getSupportActionBar().setTitle(title);
     }
 
 }
