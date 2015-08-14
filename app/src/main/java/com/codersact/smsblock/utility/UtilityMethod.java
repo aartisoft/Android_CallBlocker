@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.codersact.smsblock.blacklist.BlackListFragment;
-import com.codersact.smsblock.main.MainActivity;
 
 import activity.masum.com.smsblock.R;
 
