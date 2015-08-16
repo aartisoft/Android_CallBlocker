@@ -210,6 +210,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
                 new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
                 blackListFragment();
+                getActivity().setTitle("blac list");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
         });

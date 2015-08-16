@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -170,6 +171,8 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
                 new CommonDbMethod(getActivity()).addToSMSBlacklist("", editText.getText().toString().trim(), "");
                 dialog.dismiss();
                 UtilityMethod.blackListFragment(getActivity());
+                getActivity().setTitle("blac list");
+                //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
             }
 
         });
@@ -221,7 +224,9 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
-                UtilityMethod.blackListFragment(getActivity());;
+                UtilityMethod.blackListFragment(getActivity());
+                //getActivity().setTitle("blac list");
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
         });
