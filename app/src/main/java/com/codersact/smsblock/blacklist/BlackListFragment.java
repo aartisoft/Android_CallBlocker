@@ -169,9 +169,9 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 new CommonDbMethod(getActivity()).addToSMSBlacklist("", editText.getText().toString().trim(), "");
-                dialog.dismiss();
                 UtilityMethod.blackListFragment(getActivity());
-                getActivity().setTitle("blac list");
+                getActivity().setTitle("Black List");
+                dialog.dismiss();
                 //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
             }
 
@@ -226,7 +226,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
                 dialog.dismiss();
                 UtilityMethod.blackListFragment(getActivity());
                 //getActivity().setTitle("blac list");
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
+                //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
         });

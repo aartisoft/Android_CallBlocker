@@ -41,12 +41,14 @@ public class CommonDbMethod {
         values.put("numbers", number);
         values.put("body", body);
 
-        if (db.insert("SMS_BlackList", null, values) == -1){
+        db.insert("SMS_BlackList", null, values);
+
+        /*if (db.insert("SMS_BlackList", null, values) == -1){
             Log.d("addToSMS_BlackList", "3: blockingCodeForSMS ");
             Toast.makeText(context, name + " already exist in database\n Please try a new name!!", Toast.LENGTH_LONG).show();
             db.close();
             return;
-        }
+        }*/
 
         Log.d("addToSMS_BlackList", "4: blockingCodeForSMS ");
         Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");

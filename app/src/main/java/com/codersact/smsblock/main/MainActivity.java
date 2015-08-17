@@ -45,6 +45,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         initView();
         setClickListener();
         blackListFragment();
+        getSupportActionBar().setTitle("Black List");
 
     }
 
