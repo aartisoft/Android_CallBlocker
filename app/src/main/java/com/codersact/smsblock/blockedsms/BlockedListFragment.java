@@ -38,6 +38,7 @@ import com.codersact.smsblock.model.SmsData;
 public class BlockedListFragment extends Fragment implements View.OnClickListener, BlockedListView {
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
+    TextView textView;
     ArrayList<SmsData> smsDatas = new ArrayList<>();
     BlockedListPresenter blockedListPresenter;
     FloatingActionButton floatingActionButton;
@@ -50,11 +51,18 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         blockedListPresenter = new BlockedListPresenter(this, new BlockedListService());
         MyAdapter mAdapter = new MyAdapter(blockedListPresenter.onFetchClick(), getActivity());
         recyclerView.setAdapter(mAdapter);
+
+        if (blockedListPresenter.onFetchClick().size() > 0) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+        }
         return rootView;
     }
 
     private void initView(View rootView) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        textView = (TextView) rootView.findViewById(R.id.textView);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

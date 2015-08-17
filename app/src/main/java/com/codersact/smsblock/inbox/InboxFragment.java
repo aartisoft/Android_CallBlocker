@@ -44,6 +44,7 @@ import com.codersact.smsblock.model.SmsData;
 public class InboxFragment extends Fragment implements View.OnClickListener, InboxView {
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
+    TextView textView;
     FloatingActionButton floatingActionButton;
     ArrayList<SmsData> smsDatas = new ArrayList<>();
     InboxPresenter inboxPresenter;
@@ -56,11 +57,19 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         inboxPresenter = new InboxPresenter(this, new InboxService());
         MyAdapter mAdapter = new MyAdapter(inboxPresenter.onFetchList(), getActivity());
         recyclerView.setAdapter(mAdapter);
+
+        if (inboxPresenter.onFetchList().size() > 0) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+        }
+
         return rootView;
     }
 
     private void initView(View rootView) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        textView = (TextView) rootView.findViewById(R.id.textView);
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

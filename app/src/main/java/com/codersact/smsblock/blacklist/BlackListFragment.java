@@ -41,6 +41,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
     FloatingActionButton floatingActionButton;
     BlackListPresenter blackListPresenter;
     RelativeLayout relative_help;
+    TextView textView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,8 +54,10 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
         if (blackListPresenter.onSaveClick().size() > 0) {
             relative_help.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
         } else {
             relative_help.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
         }
 
         return rootView;
@@ -65,6 +68,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         floatingActionButton.setOnClickListener(this);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        textView = (TextView) rootView.findViewById(R.id.textView);
 
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -225,7 +229,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
                 new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
                 UtilityMethod.blackListFragment(getActivity());
-                //getActivity().setTitle("blac list");
+                getActivity().setTitle("Black List");
                 //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
