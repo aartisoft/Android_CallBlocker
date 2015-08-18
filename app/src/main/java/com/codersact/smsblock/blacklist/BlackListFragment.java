@@ -51,16 +51,27 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         blackListPresenter = new BlackListPresenter(this, new BlackListService());
         BlackListAdapter mAdapter = new BlackListAdapter(blackListPresenter.onSaveClick(), getActivity());
         recyclerView.setAdapter(mAdapter);
+        setMessage(blackListPresenter.onSaveClick().size());
+        mAdapter.setOnDataChangeListener(new BlackListAdapter.OnDataChangeListener() {
+            @Override
+            public void onDataChanged(int size) {
+                setMessage(blackListPresenter.onSaveClick().size());
+            }
+        });
 
-        if (blackListPresenter.onSaveClick().size() > 0) {
+
+
+        return rootView;
+    }
+
+    public void setMessage(int size) {
+        if (size > 0) {
             relative_help.setVisibility(View.INVISIBLE);
             textView.setVisibility(View.VISIBLE);
         } else {
             relative_help.setVisibility(View.VISIBLE);
             textView.setVisibility(View.INVISIBLE);
         }
-
-        return rootView;
     }
 
     private void initView(View rootView) {
@@ -120,6 +131,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
 
 
+
     private void openActionDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom_Destructive);
         //builderSingle.setIcon(R.drawable.about);
@@ -151,6 +163,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
                     }
                 });
+
         builderSingle.show();
     }
 
@@ -227,9 +240,9 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
-                dialog.dismiss();
                 UtilityMethod.blackListFragment(getActivity());
                 getActivity().setTitle("Black List");
+                dialog.dismiss();
                 //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hello");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }

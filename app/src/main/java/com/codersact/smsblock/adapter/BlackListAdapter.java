@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codersact.smsblock.blacklist.BlacklistView;
 import com.codersact.smsblock.db.CommonDbMethod;
 import com.codersact.smsblock.model.SmsData;
 
@@ -19,6 +20,7 @@ import activity.masum.com.smsblock.R;
 public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.ViewHolder>{
     private ArrayList<SmsData> mDataset = new ArrayList<>();
     private Context context;
+    private BlacklistView blacklistView;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -40,6 +42,10 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     public BlackListAdapter(ArrayList<SmsData> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
+        this.blacklistView = blacklistView;
+    }
+
+    public void setOnChangeListener() {
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,6 +68,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
             public void onClick(View v) {
                 //Toast.makeText(context,mDataset.get(position).getSmsAddress()  +  " Position " + position, Toast.LENGTH_SHORT).show();
                 deleteItem(position);
+                doButtonOneClickActions();
             }
         });
 
@@ -81,4 +88,20 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     public int getItemCount() {
         return mDataset.size();
     }
+
+    private void doButtonOneClickActions() {
+        if(mOnDataChangeListener != null){
+            mOnDataChangeListener.onDataChanged(mDataset.size());
+        }
+    }
+
+    OnDataChangeListener mOnDataChangeListener;
+    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
+        mOnDataChangeListener = onDataChangeListener;
+    }
+
+    public interface OnDataChangeListener{
+        public void onDataChanged(int size);
+    }
+
 }

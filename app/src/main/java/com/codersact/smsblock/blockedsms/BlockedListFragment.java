@@ -57,6 +57,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         } else {
             textView.setVisibility(View.VISIBLE);
         }
+
         return rootView;
     }
 
