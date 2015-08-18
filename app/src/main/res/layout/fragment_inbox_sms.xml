@@ -39,7 +39,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:visibility="gone"
-            android:text="INBOX" />
+            android:text="Inbox is empty." />
 
     </RelativeLayout>
 </RelativeLayout>
