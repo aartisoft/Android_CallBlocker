@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * Created by masum on 11/08/2015.
  */
 public class BlockedListService {
+
     public ArrayList<SmsData> getSmsInfo() {
         return fetchBlockedList();
     }
