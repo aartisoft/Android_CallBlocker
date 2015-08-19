@@ -20,6 +20,7 @@
             android:layout_centerHorizontal="true"
             android:padding="10dp"
             android:gravity="center"
+            android:visibility="gone"
             android:text="BLACK LIST" />
 
 
@@ -27,7 +28,9 @@
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/textView" />
+            android:layout_below="@+id/textView"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"

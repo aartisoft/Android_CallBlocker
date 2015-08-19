@@ -27,16 +27,6 @@ public class InboxNumberAdapter extends BaseAdapter {
 	public InboxNumberAdapter(Activity context, ArrayList<NumberData> optionDatas) {
         this.optionDataArrayList = optionDatas;
 		this.context = context;
-
-		ttobj = new TextToSpeech(context,
-				new TextToSpeech.OnInitListener() {
-					@Override
-					public void onInit(int status) {
-						if(status != TextToSpeech.ERROR){
-							ttobj.setLanguage(Locale.UK);
-						}
-					}
-				});
 	}
 
 	@Override

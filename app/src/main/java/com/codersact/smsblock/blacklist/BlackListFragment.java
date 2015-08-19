@@ -67,10 +67,10 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
     public void setMessage(int size) {
         if (size > 0) {
             relative_help.setVisibility(View.INVISIBLE);
-            textView.setVisibility(View.VISIBLE);
+            //textView.setVisibility(View.VISIBLE);
         } else {
             relative_help.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.INVISIBLE);
+            //textView.setVisibility(View.INVISIBLE);
         }
     }
 
