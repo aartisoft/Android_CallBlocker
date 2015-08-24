@@ -59,8 +59,6 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-
-
         return rootView;
     }
 
