@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -55,8 +57,10 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         Log.d("SMSBlockingProcess", "Original Address " + fromAddr);
 
         Toast.makeText(context, "T::: " + threadId + " ADD::: " + fromAddr, Toast.LENGTH_LONG).show();
+        //raiseNotification(context, fromAddr, threadId);
 
         ifBlockedDeleteSMS(fromAddr, threadId, context, msgBody);
+
     }
 
     /*
@@ -92,16 +96,6 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         }
 
 
-
-      /*  return;
-        if (db.insert("sms_blocked", null, values) == -1){
-            Log.d("addToSMS_BlackList", "3: blockingCodeForSMS ");
-            Toast.makeText(context, name + " already exist in database\n Please try a new name!!", Toast.LENGTH_LONG).show();
-            db.close();
-            return;
-        }
-*/
-
     }
 
     private void ifBlockedDeleteSMS(final String fromAddr, final Long threadId, final Context context, String body) {
@@ -132,7 +126,8 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
                 AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 manager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                 incommingBlockedSMS(context, "Thread blocked " + threadId, fromAddr, body);
-                raiseNotification(context, fromAddr, threadId);
+                //raiseNotification(context, fromAddr, threadId);
+                pushNotification();
 
                 c.close();
                 db.close();
@@ -166,15 +161,15 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
             Log.i("SMSBlockingProcess", "c.getCount: "+c.getCount());
             if (c.getCount() <= 0) {
                 Log.d("BlockCallsPressed", "ifBlockedDeleteSMS");
-                Log.d("If","c.getCount(): "+c.getCount());
+                Log.d("If", "c.getCount(): " + c.getCount());
                 db.close();
                 c.close();
+                //pushNotification();
                 //raiseNotification(context, name,threadId);
                 return;
             }
             db.close();
             c.close();
-
 
             // Scheduling the "delete SMS" task.
             new Timer().schedule(timerTask, 1500);
@@ -186,9 +181,36 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
     }
 
+    private void pushNotification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.about)
+                        .setContentTitle(msgBody)
+                        .setContentText("Blocked!");
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context, MainActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-
-
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+// Adds the back stack for the Intent (but not the Intent itselcf)
+        stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(100, mBuilder.build());
+    }
     /*
      * Notify the user, about the SMS
      */
