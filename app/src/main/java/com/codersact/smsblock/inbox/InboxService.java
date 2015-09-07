@@ -21,10 +21,12 @@ public class InboxService {
         Uri inboxURI = Uri.parse("content://sms/inbox");
 
         // List required columns
-        String[] reqCols = new String[]{"_id", "DISTINCT address", "body", "thread_id"};
+        String[] reqCols = new String[]{"_id", "address", "body", "thread_id"};
 
         // Get Content Resolver object, which will deal with Content Provider
         ContentResolver cr = context.getContentResolver();
+       /* Cursor c = cr.query(inboxURI, new String[]{"_id", "DISTINCT address", "body", "thread_id"}, //DISTINCT
+                "address IS NOT NULL) GROUP BY (address", null, null);*/
 
         // Fetch Inbox SMS Message from Built-in Content Provider
         Cursor c = cr.query(inboxURI, reqCols, null, null, null);
@@ -35,7 +37,7 @@ public class InboxService {
                 String msgData = "";
                 SmsData smsData = new SmsData();
 
-                for(int idx=0;idx<c.getColumnCount();idx++)
+                for(int idx=0;idx < c.getColumnCount();idx++)
                 {
                     msgData += "****" + c.getColumnName(idx) + ":" + c.getString(idx);
                     Log.i("***mm", "*** " + msgData);
@@ -55,6 +57,7 @@ public class InboxService {
                 }
 
                 smsDatas.add(smsData);
+
 
             } while (c.moveToNext());
 
