@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -154,7 +153,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (which == 0) {
-                            openDilaogInbox("Cancel");
+                            openDialogInbox("Cancel");
                         } else {
                             openManualEntryDilaog("Number", "Add", "Cancel");
                         }
@@ -213,7 +212,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         dialog.show();
     }
 
-    private void openDilaogInbox(String cancelButton) {
+    private void openDialogInbox(String cancelButton) {
         final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialogCustom_Destructive);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_inbox);
