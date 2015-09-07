@@ -21,7 +21,7 @@ public class InboxService {
         Uri inboxURI = Uri.parse("content://sms/inbox");
 
         // List required columns
-        String[] reqCols = new String[]{"_id", "address", "body", "thread_id"};
+        String[] reqCols = new String[]{"_id", "DISTINCT address", "body", "thread_id"};
 
         // Get Content Resolver object, which will deal with Content Provider
         ContentResolver cr = context.getContentResolver();

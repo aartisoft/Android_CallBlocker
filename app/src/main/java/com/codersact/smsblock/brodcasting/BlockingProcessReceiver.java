@@ -127,7 +127,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
                 manager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                 incommingBlockedSMS(context, "Thread blocked " + threadId, fromAddr, body);
                 //raiseNotification(context, fromAddr, threadId);
-                pushNotification();
+                pushNotification(fromAddr);
 
                 c.close();
                 db.close();
@@ -181,12 +181,12 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
     }
 
-    private void pushNotification(){
+    private void pushNotification(String fromAddress){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.about)
                         .setContentTitle(msgBody)
-                        .setContentText("Blocked!");
+                        .setContentText(fromAddress);
 // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
