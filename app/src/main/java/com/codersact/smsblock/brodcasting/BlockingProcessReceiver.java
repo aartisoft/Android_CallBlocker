@@ -113,7 +113,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
         try {
             //Create a cursor for the "SMS_BlackList" table
-            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
 
             //Check, if the "fromAddr" exists in the BlackListDB
             Cursor c = db.query("SMS_BlackList", null, "numbers=?", new String[] { fromAddr }, null, null, null);
