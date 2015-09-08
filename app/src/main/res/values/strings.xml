@@ -9,6 +9,7 @@
     <string name="action_search">Search</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="action_exit">Exit</string>
 
     <string name="nav_item_home">Home</string>
     <string name="nav_item_friends">Friends</string>

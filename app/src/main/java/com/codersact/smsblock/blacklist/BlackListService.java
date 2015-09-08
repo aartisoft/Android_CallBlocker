@@ -19,7 +19,7 @@ public class BlackListService {
         ArrayList<SmsData> smsDatas = new ArrayList<>();
 
         try {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
 
             //Check, if the "fromAddr" exists in the BlackListDB
             Cursor c = db.query("SMS_BlackList", null, null, null, null, null, null);

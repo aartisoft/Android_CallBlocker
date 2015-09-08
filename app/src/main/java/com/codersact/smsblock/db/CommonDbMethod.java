@@ -29,7 +29,7 @@ public class CommonDbMethod {
         }
 
         SQLiteDatabase db;
-        db = context.openOrCreateDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+        db = context.openOrCreateDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
         db.setVersion(1);
         db.setLocale(Locale.getDefault());
         db.setLockingEnabled(true);
@@ -60,7 +60,7 @@ public class CommonDbMethod {
 
     public boolean deleteSms(final String number, final String tableName) {
         try {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
             db.delete(tableName, "numbers" + " = ?", new String[] {number});
             //return true;
 

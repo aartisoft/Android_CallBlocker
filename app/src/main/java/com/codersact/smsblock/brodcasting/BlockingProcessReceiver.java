@@ -184,7 +184,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
     private void pushNotification(String fromAddress){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.about)
+                        .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(msgBody)
                         .setContentText(fromAddress);
 // Creates an explicit intent for an Activity in your app
