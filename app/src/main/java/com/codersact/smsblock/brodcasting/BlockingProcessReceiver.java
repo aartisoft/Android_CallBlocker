@@ -74,7 +74,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
         try {
             SQLiteDatabase db;
-            db = context.openOrCreateDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+            db = context.openOrCreateDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
             db.setVersion(1);
             db.setLocale(Locale.getDefault());
             db.setLockingEnabled(true);
