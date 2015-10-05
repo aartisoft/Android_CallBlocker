@@ -7,12 +7,13 @@ public class SmsData {
     private String smsNo;
     private String smsString;
     private String smsAddress;
+    private String smsId;
 
-    public String getSmsNo() {
+    public String getSmsThreadNo() {
         return smsNo;
     }
 
-    public void setSmsNo(String smsNo) {
+    public void setSmsThreadId(String smsNo) {
         this.smsNo = smsNo;
     }
 
@@ -30,5 +31,13 @@ public class SmsData {
 
     public void setSmsAddress(String smsAddress) {
         this.smsAddress = smsAddress;
+    }
+
+    public String getSmsId() {
+        return smsId;
+    }
+
+    public void setSmsId(String smsId) {
+        this.smsId = smsId;
     }
 }

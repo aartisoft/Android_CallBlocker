@@ -97,7 +97,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     }
 
     public interface OnDataChangeListener{
-        public void onDataChanged(int size);
+        void onDataChanged(int size);
     }
 
 }

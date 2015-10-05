@@ -29,7 +29,7 @@ public class BlockedListService {
             if (c.moveToFirst() && c.getCount() > 0) {
                 while (!c.isAfterLast()) {
                     SmsData smsData = new SmsData();
-                    smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
+                    smsData.setSmsThreadId(c.getString(c.getColumnIndex("names")));
                     smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
                     smsData.setSmsString(c.getString(c.getColumnIndex("body")));
                     smsDatas.add(smsData);

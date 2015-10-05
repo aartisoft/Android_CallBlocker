@@ -51,7 +51,10 @@ public class InboxService {
                     }
 
                     if (idx == 3) {
-                        smsData.setSmsNo(c.getString(idx));
+                        smsData.setSmsThreadId(c.getString(idx));
+                    }
+                    if (idx == 4) {
+                        smsData.setSmsId(c.getString(idx));
                     }
 
                 }

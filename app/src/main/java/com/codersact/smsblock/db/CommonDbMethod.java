@@ -22,7 +22,7 @@ public class CommonDbMethod {
         this.context = context;
     }
 
-    public void addToSMSBlacklist(String name, String number, String body) {
+    public void addToSMSBlacklist(String id, String name, String number, String body) {
         if (number.length() == 0) {
             Toast.makeText(context, "Please fill up both the fields", Toast.LENGTH_LONG).show();
             return;
@@ -33,13 +33,14 @@ public class CommonDbMethod {
         db.setVersion(1);
         db.setLocale(Locale.getDefault());
         db.setLockingEnabled(true);
-        db.execSQL("create table IF NOT EXISTS SMS_BlackList(names varchar(20), numbers varchar(20) UNIQUE, body varchar(250))");
+        db.execSQL("create table IF NOT EXISTS SMS_BlackList(sms_id, names varchar(20), numbers varchar(20) UNIQUE)");
 
         // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
         ContentValues values = new ContentValues();
+        values.put("sms_id", id);
         values.put("names", name);
         values.put("numbers", number);
-        values.put("body", body);
+        //values.put("body", body);
 
         db.insert("SMS_BlackList", null, values);
 

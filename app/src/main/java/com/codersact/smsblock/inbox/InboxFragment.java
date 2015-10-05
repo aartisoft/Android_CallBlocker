@@ -3,20 +3,14 @@ package com.codersact.smsblock.inbox;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,13 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import com.codersact.smsblock.adapter.BlackListAdapter;
-import com.codersact.smsblock.adapter.InboxNumberAdapter;
-import com.codersact.smsblock.adapter.MyAdapter;
+import com.codersact.smsblock.adapter.InboxNumberDialogAdapter;
+import com.codersact.smsblock.adapter.InboxAdapter;
 import activity.masum.com.smsblock.R;
 
 import com.codersact.smsblock.blacklist.BlackListFragment;
@@ -55,7 +47,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         View rootView = inflater.inflate(R.layout.fragment_inbox_sms, container, false);
         initView(rootView);
         inboxPresenter = new InboxPresenter(this, new InboxService());
-        MyAdapter mAdapter = new MyAdapter(inboxPresenter.onFetchList(), getActivity());
+        InboxAdapter mAdapter = new InboxAdapter(inboxPresenter.onFetchList(), getActivity());
         recyclerView.setAdapter(mAdapter);
 
         if (inboxPresenter.onFetchList().size() > 0) {
@@ -164,7 +156,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", editText.getText().toString().trim(), "");
+                new CommonDbMethod(getActivity()).addToSMSBlacklist("", "", editText.getText().toString().trim(), "");
                 dialog.dismiss();
                 blackListFragment();
             }
@@ -208,7 +200,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
             numberDatas.add(numberData);
         }
 
-        InboxNumberAdapter inboxNumberAdapter = new InboxNumberAdapter(getActivity(), numberDatas);
+        InboxNumberDialogAdapter inboxNumberAdapter = new InboxNumberDialogAdapter(getActivity(), numberDatas);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
         btnCancel.setText(cancelButton);
@@ -216,10 +208,10 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
+                new CommonDbMethod(getActivity()).addToSMSBlacklist("", smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
                 blackListFragment();
-                getActivity().setTitle("blac list");
+                getActivity().setTitle("black list");
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();
             }
         });

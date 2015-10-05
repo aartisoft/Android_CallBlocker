@@ -25,8 +25,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-import com.codersact.smsblock.adapter.InboxNumberAdapter;
-import com.codersact.smsblock.adapter.MyAdapter;
+import com.codersact.smsblock.adapter.InboxNumberDialogAdapter;
+import com.codersact.smsblock.adapter.InboxAdapter;
 import activity.masum.com.smsblock.R;
 
 import com.codersact.smsblock.blacklist.BlackListFragment;
@@ -49,7 +49,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         View rootView = inflater.inflate(R.layout.fragment_blocked_list, container, false);
         initView(rootView);
         blockedListPresenter = new BlockedListPresenter(this, new BlockedListService());
-        MyAdapter mAdapter = new MyAdapter(blockedListPresenter.onFetchClick(), getActivity());
+        InboxAdapter mAdapter = new InboxAdapter(blockedListPresenter.onFetchClick(), getActivity());
         recyclerView.setAdapter(mAdapter);
 
         if (blockedListPresenter.onFetchClick().size() > 0) {
@@ -73,43 +73,6 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    /*private void fetchBlockedkList() {
-        try {
-            //Create a cursor for the "SMS_BlackList" table
-            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.masum.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
-
-            //Check, if the "fromAddr" exists in the BlackListDB
-            Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
-            //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
-
-            if (c.moveToFirst() && c.getCount() > 0) {
-                while (!c.isAfterLast()) {
-                    SmsData smsData = new SmsData();
-                    smsData.setSmsNo(c.getString(c.getColumnIndex("names")));
-                    smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
-                    smsData.setSmsString(c.getString(c.getColumnIndex("names")));
-                    smsDatas.add(smsData);
-                    c.moveToNext();
-                }
-
-                c.close();
-
-            }
-
-            db.close();
-        } catch (Exception e) {
-
-        }
-
-        return;
-    }*/
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_about_us, menu);
-        return true;
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -214,7 +177,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", editText.getText().toString().trim(), "");
+                new CommonDbMethod(getActivity()).addToSMSBlacklist("", "", editText.getText().toString().trim(), "");
                 dialog.dismiss();
                 blackListFragment();
             }
@@ -258,7 +221,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
             numberDatas.add(numberData);
         }
 
-        InboxNumberAdapter inboxNumberAdapter = new InboxNumberAdapter(getActivity(), numberDatas);
+        InboxNumberDialogAdapter inboxNumberAdapter = new InboxNumberDialogAdapter(getActivity(), numberDatas);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
         btnCancel.setText(cancelButton);
@@ -266,7 +229,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist(smsDatas.get(position).getSmsNo(), numberDatas.get(position).getSenderNumber(), "");
+                new CommonDbMethod(getActivity()).addToSMSBlacklist("", smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber(), "");
                 dialog.dismiss();
                 blackListFragment();
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();

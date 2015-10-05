@@ -17,16 +17,19 @@ import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsMessage;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.codersact.smsblock.main.MainActivity;
 
+import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import activity.masum.com.smsblock.R;
+import com.android.internal.telephony.ITelephony;
 
 /**
  * Created by masum on 30/07/2015.
@@ -35,12 +38,33 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
     Integer notificationId = 1207, requestId=1208;
     String msgBody;
     Context context;
+    public static final String SMS_INBOX_URI="content://sms/inbox";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
 
-        Bundle bundle = intent.getExtras();
+        // If, the received action is not a type of "Phone_State", ignore it
+        if (!intent.getAction().equals("android.intent.action.PHONE_STATE"))
+            return;
+
+            // Else, try to do some action
+        else {
+            // Fetch the number of incoming call
+           String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+           ifBlockedDeleteSMS(number , null, context, "Hello test");
+            Log.i("income number", "" + number);
+
+            // Check, whether this is a member of "Black listed" phone numbers stored in the database
+            /*if(MainActivity.blockList.contains(new Blacklist(number)))
+            {
+                // If yes, invoke the method
+                disconnectPhoneItelephony(context);
+                return;
+            }*/
+        }
+
+        /*Bundle bundle = intent.getExtras();
         Object messages[] = (Object[]) bundle.get("pdus");
         final SmsMessage smsMessage[] = new SmsMessage[messages.length];
 
@@ -59,9 +83,31 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         Toast.makeText(context, "T::: " + threadId + " ADD::: " + fromAddr, Toast.LENGTH_LONG).show();
         //raiseNotification(context, fromAddr, threadId);
 
-        ifBlockedDeleteSMS(fromAddr, threadId, context, msgBody);
+        ifBlockedDeleteSMS(fromAddr, threadId, context, msgBody);*/
 
     }
+
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void disconnectPhoneItelephony(Context context) {
+
+        ITelephony telephonyService;
+        TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        try
+        {
+            Class c = Class.forName(telephony.getClass().getName());
+            Method m = c.getDeclaredMethod("getITelephony");
+            m.setAccessible(true);
+            telephonyService = (ITelephony) m.invoke(telephony);
+            telephonyService.endCall();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     /*
 	 *   If the "From Address" is Blacklisted,
@@ -70,7 +116,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 	 *      raise a notification for the SMS
 	 */
 
-    protected void incommingBlockedSMS(Context context, String name, String number, String body) {
+    protected void saveIncommingBlockedSMS(Context context, String name, String number, String body) {
 
         try {
             SQLiteDatabase db;
@@ -100,16 +146,6 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
     private void ifBlockedDeleteSMS(final String fromAddr, final Long threadId, final Context context, String body) {
         // Creating a schedulable "delete SMS" task.
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Log.i("Timer Task", "Delete START");
-                deleteSMSInProgress(context, threadId);
-                Log.i("Timer Task", "Delete END");
-                Looper.loop();
-            }
-        };
 
         try {
             //Create a cursor for the "SMS_BlackList" table
@@ -121,11 +157,12 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
             if (c.moveToFirst() && c.getCount() > 0) {
                 // Scheduling the "delete SMS" task.
-                new Timer().schedule(timerTask, 1500);
+                //new Timer().schedule(timerTask, 1500);
 
                 AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 manager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                incommingBlockedSMS(context, "Thread blocked " + threadId, fromAddr, body);
+                disconnectPhoneItelephony(context); // call disconnect
+                saveIncommingBlockedSMS(context, "Call blocked ", fromAddr, body);
                 //raiseNotification(context, fromAddr, threadId);
                 pushNotification(fromAddr);
 
@@ -134,7 +171,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
                 return;
             }
 
-            //Extract the name corresponding to the "Sender" from contacts
+            /*//Extract the name corresponding to the "Sender" from contacts
             Uri lookupUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(fromAddr));
             c = context.getContentResolver().query(lookupUri, null, null, null, null);
             if( ! c.moveToFirst()){
@@ -145,7 +182,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
                 return;
             }
 
-            Log.d("ifBlockedDeleteSMS", c.moveToFirst()+"");
+            Log.d("ifBlockedDeleteSMS", c.moveToFirst() + "");
             Log.i("ifBlockedDeleteSMS","DisplayName: "+c.getString(c.getColumnIndex("display_name")));
             Log.i("ifBlockedDeleteSMS","Number: "+c.getString(c.getColumnIndex("number")));
             String name = c.getString(c.getColumnIndex("display_name"));
@@ -154,8 +191,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
             //Check, if the "Contact name" is present in BlackListDB
             db.execSQL("create table IF NOT EXISTS SMS_BlackList(names varchar(20) UNIQUE, numbers varchat(20))");
             c.close();
-            c = db.query("SMS_BlackList", null, "names=?", new String[] { name },
-                    null, null, null);
+            c = db.query("SMS_BlackList", null, "names=?", new String[] { name }, null, null, null);
 
             Log.d("SMSBlockingProcess", "2 ifBlockedDeleteSMS");
             Log.i("SMSBlockingProcess", "c.getCount: "+c.getCount());
@@ -172,7 +208,8 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
             c.close();
 
             // Scheduling the "delete SMS" task.
-            new Timer().schedule(timerTask, 1500);
+            //new Timer().schedule(timerTask, 1500);*/
+
             Log.d("SMSBlockingProcess", " ifBlockedDeleteSMS Ended");
         } catch (Exception e){
             Log.e("SMSBlocking excep", " " + e.getMessage());
@@ -182,32 +219,27 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
     }
 
     private void pushNotification(String fromAddress){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.app_icon)
-                        .setContentTitle(msgBody)
+                        .setContentTitle("Call Blocked")
                         .setContentText(fromAddress);
-// Creates an explicit intent for an Activity in your app
+
+        // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-// Adds the back stack for the Intent (but not the Intent itselcf)
+        // Adds the back stack for the Intent (but not the Intent itselcf)
         stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
+        // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
         mNotificationManager.notify(100, mBuilder.build());
     }
@@ -244,7 +276,7 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         Uri inbox = Uri.parse("content://sms/inbox");
         Cursor c = context.getContentResolver().query(inbox, null, null, null, "date desc");
 
-        Log.i("Timer Task", (c==null) + "  " + c.moveToFirst());
+        Log.i("Timer Task", (c == null) + "  " + c.moveToFirst());
         if (c == null || !c.moveToFirst()){
             c.close();
             return;
@@ -254,14 +286,39 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         String from = c.getString(c.getColumnIndex("address"));
         c.close();
 
-
-        Uri thread = Uri.parse("content://sms/conversations/" + thread_id);
+        Uri thread = Uri.parse("content://sms/conversation/" + thread_id);
         context.getContentResolver().delete(thread, null, null);
         Log.i("Timer Task", "Delete Successful");
+        Toast.makeText(context,"Delete Successful " + thread_id, Toast.LENGTH_LONG).show();
 
         AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
+    }
+
+    public void delete_thread(String thread)
+    {
+        Cursor c = context.getContentResolver().query(
+                Uri.parse("content://sms/"),new String[] {
+                        "_id", "thread_id", "address", "person", "date","body" }, null, null, null);
+
+        try {
+            while (c.moveToNext())
+            {
+                int id = c.getInt(0);
+                Log.i("ID", "***" + id);
+                String address = c.getString(2);
+                if (address.equals(thread))
+                {
+                    Log.i("OK", "***" + address);
+                    Log.i("OK ID", "***" + id);
+                    context.getContentResolver().delete(Uri.parse("content://sms/" + id), null, null);
+                }
+
+            }
+        } catch (Exception e) {
+            Log.e("DELETE EXCEPTION", "" + e.getMessage() );
+        }
     }
 
     /*
@@ -290,6 +347,37 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
             }
         }
         return threadId;
+    }
+
+    public static int deleteAllSMSbyNumber(String number, Context ctx) {
+
+        Uri smsURI = Uri.parse(SMS_INBOX_URI);
+        String thread_id= findThreadIdByAddress(number,ctx);
+
+        return ctx.getContentResolver().delete(smsURI, "thread_id=?", new String[] {thread_id});
+
+    }
+
+
+
+    public static String findThreadIdByAddress(String number, Context ctx) {
+
+        Uri uri = Uri.parse(SMS_INBOX_URI);
+        String thread_id ="";
+
+        Cursor c = null;
+        try{
+            c = ctx.getContentResolver().query(uri, new String[] {"thread_id"}, "address=?" ,new String[] {number},null);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        if(c != null && c.moveToFirst()){
+
+            thread_id= c.getString(0);
+        }
+
+        return thread_id;
     }
 
 }
