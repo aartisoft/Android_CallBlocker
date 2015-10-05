@@ -141,7 +141,6 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
         }
 
-
     }
 
     private void ifBlockedDeleteSMS(final String fromAddr, final Long threadId, final Context context, String body) {
@@ -240,7 +239,6 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
         mNotificationManager.notify(100, mBuilder.build());
     }
     /*
