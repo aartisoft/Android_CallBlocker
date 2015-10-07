@@ -151,9 +151,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         navigationMenu2.setMenuName("Log");
         navigationMenus.add(navigationMenu2);
 
-        NavigationMenu navigationMenu3 = new NavigationMenu();
+        /*NavigationMenu navigationMenu3 = new NavigationMenu();
         navigationMenu3.setMenuName("Inbox");
-        navigationMenus.add(navigationMenu3);
+        navigationMenus.add(navigationMenu3);*/
 
 //        NavigationMenu navigationMenu4 = new NavigationMenu();
 //        navigationMenu4.setMenuName("Settings");
