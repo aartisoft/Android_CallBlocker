@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="178dp"
-    android:background="@color/colorLabel"
+    android:background="@color/windowBackground"
     android:orientation="vertical"
+    android:layout_marginBottom="8dp"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingBottom="16dp"
         android:orientation="vertical">
 
         <TextView
@@ -19,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="Easy SMS Blocker"
-            android:textColor="#ffffff"
+            android:text="Easy Call Blocker"
+            android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -30,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="5dp"
-            android:text="be free from annoying sms :)"
-            android:textColor="#ffffff"
+            android:text="be free from annoying call :)"
+            android:textColor="@color/navigationBarText"
             android:textSize="14sp"
             android:textStyle="normal" />
     </LinearLayout>

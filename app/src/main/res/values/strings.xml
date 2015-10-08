@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmsBlock</string>
+    <string name="app_name">Call Blocker</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="banner_ad_unit_id">ca-app-pub-3111901899983987/2819170358</string>

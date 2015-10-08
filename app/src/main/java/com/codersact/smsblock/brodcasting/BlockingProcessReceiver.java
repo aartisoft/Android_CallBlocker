@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.codersact.smsblock.main.MainActivity;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -52,8 +54,11 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
         else {
             // Fetch the number of incoming call
            String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-           ifBlockedDeleteSMS(number , null, context, "Hello test");
-            Log.i("income number", "" + number);
+           SimpleDateFormat df = new SimpleDateFormat("MMM d, yyyy hh:mm:ss");
+           Calendar c = Calendar.getInstance();
+           String formattedDate = df.format(c.getTime());
+           ifBlockedDeleteSMS(number , null, context, formattedDate);
+           Log.i("income number", "" + number);
 
             // Check, whether this is a member of "Black listed" phone numbers stored in the database
             /*if(MainActivity.blockList.contains(new Blacklist(number)))

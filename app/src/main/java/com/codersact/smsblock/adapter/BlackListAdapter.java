@@ -1,11 +1,14 @@
 package com.codersact.smsblock.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +32,12 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
         // each data item is just a string in this case
         public TextView mTextView;
         public TextView mTextDesc;
-        public Button btnDelete;
+        public ImageButton btnDelete;
 
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.person_name);
-            btnDelete = (Button) v.findViewById(R.id.btnDelete);
+            btnDelete = (ImageButton) v.findViewById(R.id.btnDelete);
         }
     }
 
@@ -62,9 +65,17 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context, mDataset.get(position).getSmsAddress()  +  " Position " + position, Toast.LENGTH_SHORT).show();
-                deleteItem(position);
-                doButtonOneClickActions();
+                new AlertDialog.Builder(context)
+                        .setTitle("Delete")
+                        .setMessage("Do you really want to delete?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                deleteItem(position);
+                                doButtonOneClickActions();
+                            }})
+                        .setNegativeButton("NO", null).show();
+
             }
         });
 
