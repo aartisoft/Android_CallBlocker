@@ -95,7 +95,6 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void disconnectPhoneItelephony(Context context) {
-
         ITelephony telephonyService;
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -169,6 +168,9 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
                 saveIncommingBlockedSMS(context, "Call blocked ", fromAddr, body);
                 //raiseNotification(context, fromAddr, threadId);
                 pushNotification(fromAddr);
+
+                //AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
                 c.close();
                 db.close();
