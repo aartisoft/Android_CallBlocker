@@ -10,6 +10,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -22,7 +23,9 @@
         android:gravity="center"
         android:padding="10dp"
         android:visibility="gone"
-        android:text="No blocked sms listed yet." />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="No blocked number listed yet." />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"

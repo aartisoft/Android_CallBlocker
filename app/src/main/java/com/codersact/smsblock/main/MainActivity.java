@@ -1,5 +1,6 @@
 package com.codersact.smsblock.main;
 
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,10 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.codersact.smsblock.adapter.NavigationAdapter;
 import com.codersact.smsblock.blacklist.BlackListFragment;
 import com.codersact.smsblock.blockedsms.BlockedListFragment;
+import com.codersact.smsblock.db.CommonDbMethod;
 import com.codersact.smsblock.inbox.InboxFragment;
 import com.codersact.smsblock.model.NavigationMenu;
 import com.codersact.smsblock.utility.UtilityMethod;
@@ -103,8 +110,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         setTitle(navigationMenus.get(2).getMenuName());
 
                     } else if (recyclerView.getChildPosition(child) == 3) {
-                        inboxFragment();
-                        setTitle(navigationMenus.get(3).getMenuName());
+                        openDialogAbout("", "ACCEPT", "CANCEL");
+                        /*inboxFragment();
+                        setTitle(navigationMenus.get(3).getMenuName());*/
+
 
                     } else if (recyclerView.getChildPosition(child) == 4) {
                         settingsFragment();
@@ -146,9 +155,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         navigationMenu2.setMenuName("Log");
         navigationMenus.add(navigationMenu2);
 
-        /*NavigationMenu navigationMenu3 = new NavigationMenu();
-        navigationMenu3.setMenuName("Inbox");
-        navigationMenus.add(navigationMenu3);*/
+        NavigationMenu navigationMenu3 = new NavigationMenu();
+        navigationMenu3.setMenuName("About");
+        navigationMenus.add(navigationMenu3);
 
 //        NavigationMenu navigationMenu4 = new NavigationMenu();
 //        navigationMenu4.setMenuName("Settings");
@@ -230,6 +239,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDialogAbout(String message, String okButton, String cancelButton) {
+        final Dialog dialog = new Dialog(this, R.style.AlertDialogCustom_Destructive);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_about);
+        dialog.setCanceledOnTouchOutside(false);
+
+        ImageButton imgBtnClose = (ImageButton) dialog.findViewById(R.id.imgBtnClose);
+
+
+        imgBtnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+
+        });
+
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+        btnCancel.setText(cancelButton);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+
+        });
+
+        dialog.show();
     }
 
 
