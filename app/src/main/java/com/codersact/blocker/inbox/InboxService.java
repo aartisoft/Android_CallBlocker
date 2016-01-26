@@ -1,4 +1,4 @@
-package com.codersact.smsblock.inbox;
+package com.codersact.blocker.inbox;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 

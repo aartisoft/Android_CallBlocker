@@ -1,6 +1,6 @@
-package com.codersact.smsblock.inbox;
+package com.codersact.blocker.inbox;
 
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 

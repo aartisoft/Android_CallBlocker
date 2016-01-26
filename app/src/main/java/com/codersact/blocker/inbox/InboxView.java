@@ -1,4 +1,4 @@
-package com.codersact.smsblock.inbox;
+package com.codersact.blocker.inbox;
 
 import android.content.Context;
 
