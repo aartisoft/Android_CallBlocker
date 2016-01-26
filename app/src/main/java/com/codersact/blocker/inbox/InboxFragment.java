@@ -1,4 +1,4 @@
-package com.codersact.smsblock.inbox;
+package com.codersact.blocker.inbox;
 
 import android.app.Dialog;
 import android.app.Fragment;
@@ -24,14 +24,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import com.codersact.smsblock.adapter.InboxNumberDialogAdapter;
-import com.codersact.smsblock.adapter.InboxAdapter;
+import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
+import com.codersact.blocker.adapter.InboxAdapter;
 import activity.masum.com.smsblock.R;
 
-import com.codersact.smsblock.blacklist.BlackListFragment;
-import com.codersact.smsblock.db.CommonDbMethod;
-import com.codersact.smsblock.model.NumberData;
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.blacklist.BlackListFragment;
+import com.codersact.blocker.db.CommonDbMethod;
+import com.codersact.blocker.model.NumberData;
+import com.codersact.blocker.model.SmsData;
 
 public class InboxFragment extends Fragment implements View.OnClickListener, InboxView {
     private RecyclerView.LayoutManager mLayoutManager;
