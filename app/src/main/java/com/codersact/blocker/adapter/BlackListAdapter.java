@@ -1,4 +1,4 @@
-package com.codersact.smsblock.adapter;
+package com.codersact.blocker.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,14 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.codersact.smsblock.blacklist.BlacklistView;
-import com.codersact.smsblock.db.CommonDbMethod;
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.blacklist.BlacklistView;
+import com.codersact.blocker.db.CommonDbMethod;
+import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 

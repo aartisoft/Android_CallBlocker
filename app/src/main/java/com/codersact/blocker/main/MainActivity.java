@@ -1,7 +1,8 @@
-package com.codersact.smsblock.main;
+package com.codersact.blocker.main;
 
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -16,21 +17,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.codersact.smsblock.adapter.NavigationAdapter;
-import com.codersact.smsblock.blacklist.BlackListFragment;
-import com.codersact.smsblock.blockedsms.BlockedListFragment;
-import com.codersact.smsblock.db.CommonDbMethod;
-import com.codersact.smsblock.inbox.InboxFragment;
-import com.codersact.smsblock.model.NavigationMenu;
-import com.codersact.smsblock.utility.UtilityMethod;
+import com.codersact.blocker.adapter.NavigationAdapter;
+import com.codersact.blocker.blacklist.BlackListFragment;
+import com.codersact.blocker.blockedsms.BlockedListFragment;
+import com.codersact.blocker.inbox.InboxFragment;
+import com.codersact.blocker.model.NavigationMenu;
+import com.codersact.blocker.utility.UtilityMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import activity.masum.com.smsblock.R;
 
@@ -65,7 +64,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setClickListener();
         blackListFragment();
         getSupportActionBar().setTitle("Black List");
+        //alterTable();
 
+    }
+
+    public void alterTable() {
+        SQLiteDatabase db;
+        db = getApplicationContext().openOrCreateDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+        db.setVersion(1);
+        db.setLocale(Locale.getDefault());
+        //db.setLockingEnabled(true);
+
+        db.execSQL("ALTER TABLE " + "sms_blocked" + " ADD COLUMN " + " id integer primary key autoincrement");
     }
 
     private void setClickListener() {

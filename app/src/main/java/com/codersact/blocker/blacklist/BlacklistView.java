@@ -1,4 +1,4 @@
-package com.codersact.smsblock.blacklist;
+package com.codersact.blocker.blacklist;
 
 /**
  * Created by masum on 11/08/2015.

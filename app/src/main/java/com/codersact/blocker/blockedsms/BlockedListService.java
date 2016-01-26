@@ -1,9 +1,9 @@
-package com.codersact.smsblock.blockedsms;
+package com.codersact.blocker.blockedsms;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 
@@ -20,10 +20,10 @@ public class BlockedListService {
         ArrayList<SmsData> smsDatas = new ArrayList<>();
 
         try {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/activity.plab.com.smsblock/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
 
             //Check, if the "fromAddr" exists in the BlackListDB
-            Cursor c = db.query("sms_blocked", null, null, null, null, null, null);
+            Cursor c = db.query("sms_blocked", null, null, null, null, null, " id DESC");
             //Log.i("ifBlockedDeleteSMS", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
 
             if (c.moveToFirst() && c.getCount() > 0) {

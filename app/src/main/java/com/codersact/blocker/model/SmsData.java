@@ -1,4 +1,4 @@
-package com.codersact.smsblock.model;
+package com.codersact.blocker.model;
 
 /**
  * Created by masum on 30/07/2015.

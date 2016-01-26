@@ -1,4 +1,4 @@
-package com.codersact.smsblock.utility;
+package com.codersact.blocker.utility;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
-import com.codersact.smsblock.blacklist.BlackListFragment;
+import com.codersact.blocker.blacklist.BlackListFragment;
 
 import activity.masum.com.smsblock.R;
 

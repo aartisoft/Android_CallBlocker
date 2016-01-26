@@ -1,6 +1,6 @@
-package com.codersact.smsblock.blacklist;
+package com.codersact.blocker.blacklist;
 
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 

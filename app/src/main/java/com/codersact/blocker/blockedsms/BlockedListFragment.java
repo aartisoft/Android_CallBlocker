@@ -1,4 +1,4 @@
-package com.codersact.smsblock.blockedsms;
+package com.codersact.blocker.blockedsms;
 
 import android.app.Dialog;
 import android.app.Fragment;
@@ -25,15 +25,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-import com.codersact.smsblock.adapter.InboxNumberDialogAdapter;
-import com.codersact.smsblock.adapter.InboxAdapter;
+import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
+import com.codersact.blocker.adapter.InboxAdapter;
 import activity.masum.com.smsblock.R;
 
-import com.codersact.smsblock.blacklist.BlackListFragment;
-import com.codersact.smsblock.db.CommonDbMethod;
-import com.codersact.smsblock.inbox.InboxService;
-import com.codersact.smsblock.model.NumberData;
-import com.codersact.smsblock.model.SmsData;
+import com.codersact.blocker.blacklist.BlackListFragment;
+import com.codersact.blocker.db.CommonDbMethod;
+import com.codersact.blocker.inbox.InboxService;
+import com.codersact.blocker.model.NumberData;
+import com.codersact.blocker.model.SmsData;
 
 public class BlockedListFragment extends Fragment implements View.OnClickListener, BlockedListView {
     private RecyclerView.LayoutManager mLayoutManager;
@@ -125,40 +125,6 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         ft.commit();
     }
 
-    private void openActionDialog() {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom_Destructive);
-        //builderSingle.setIcon(R.drawable.about);
-        builderSingle.setTitle("Add From Sender");
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_selectable_list_item);
-        arrayAdapter.add("Inbox");
-        arrayAdapter.add("Manual Entry");
-
-        builderSingle.setNegativeButton("cancel",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        builderSingle.setAdapter(arrayAdapter,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if (which == 0) {
-                            openDilaogInbox("Cancel");
-                        } else {
-                            openManualEntryDilaog("Number", "Add", "Cancel");
-                        }
-
-                    }
-                });
-        builderSingle.show();
-    }
-
     private void openManualEntryDilaog(String message, String okButton, String cancelButton) {
         final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialogCustom_Destructive);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -245,6 +211,40 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         });
 
         dialog.show();
+    }
+
+    private void openActionDialog() {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom_Destructive);
+        //builderSingle.setIcon(R.drawable.about);
+        builderSingle.setTitle("Add From Sender");
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_selectable_list_item);
+        arrayAdapter.add("Inbox");
+        arrayAdapter.add("Manual Entry");
+
+        builderSingle.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(arrayAdapter,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (which == 0) {
+                            openDilaogInbox("Cancel");
+                        } else {
+                            openManualEntryDilaog("Number", "Add", "Cancel");
+                        }
+
+                    }
+                });
+        builderSingle.show();
     }
 
 }
