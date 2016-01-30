@@ -1,6 +1,6 @@
 package com.codersact.blocker.blockedlist;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class BlockedListPresenter {
         this.blackListService = blackListService;
     }
 
-    public ArrayList<SmsData> onFetchClick() {
+    public ArrayList<MobileData> onFetchClick() {
         String smsName = blacklistView.getSmsName();
         String smsNumber = blacklistView.getSmsNumber();
         return blackListService.getSmsInfo();

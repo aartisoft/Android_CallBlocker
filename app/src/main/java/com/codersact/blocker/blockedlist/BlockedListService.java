@@ -3,7 +3,7 @@ package com.codersact.blocker.blockedlist;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -12,12 +12,12 @@ import java.util.ArrayList;
  */
 public class BlockedListService {
 
-    public ArrayList<SmsData> getSmsInfo() {
+    public ArrayList<MobileData> getSmsInfo() {
         return fetchBlockedList();
     }
 
-    private ArrayList<SmsData> fetchBlockedList() {
-        ArrayList<SmsData> smsDatas = new ArrayList<>();
+    private ArrayList<MobileData> fetchBlockedList() {
+        ArrayList<MobileData> mobileDatas = new ArrayList<>();
 
         try {
             SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
@@ -28,11 +28,11 @@ public class BlockedListService {
 
             if (c.moveToFirst() && c.getCount() > 0) {
                 while (!c.isAfterLast()) {
-                    SmsData smsData = new SmsData();
-                    smsData.setCallerName(c.getString(c.getColumnIndex("names")));
-                    smsData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
-                    smsData.setOtherString(c.getString(c.getColumnIndex("body")));
-                    smsDatas.add(smsData);
+                    MobileData mobileData = new MobileData();
+                    mobileData.setCallerName(c.getString(c.getColumnIndex("names")));
+                    mobileData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
+                    mobileData.setOtherString(c.getString(c.getColumnIndex("body")));
+                    mobileDatas.add(mobileData);
                     c.moveToNext();
                 }
 
@@ -46,6 +46,6 @@ public class BlockedListService {
 
         }
 
-        return smsDatas;
+        return mobileDatas;
     }
 }
