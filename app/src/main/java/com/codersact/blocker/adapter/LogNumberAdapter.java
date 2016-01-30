@@ -15,13 +15,13 @@ import com.codersact.blocker.model.NumberData;
 import java.util.ArrayList;
 
 
-public class InboxNumberDialogAdapter extends BaseAdapter {
+public class LogNumberAdapter extends BaseAdapter {
     private ArrayList<NumberData> optionDataArrayList;
 	private Activity context;
 	private LayoutInflater mInflater;
 	private TextToSpeech ttobj;
 
-	public InboxNumberDialogAdapter(Activity context, ArrayList<NumberData> optionDatas) {
+	public LogNumberAdapter(Activity context, ArrayList<NumberData> optionDatas) {
         this.optionDataArrayList = optionDatas;
 		this.context = context;
 	}

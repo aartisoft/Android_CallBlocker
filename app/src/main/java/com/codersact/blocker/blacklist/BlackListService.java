@@ -3,7 +3,7 @@ package com.codersact.blocker.blacklist;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -11,12 +11,12 @@ import java.util.ArrayList;
  * Created by masum on 11/08/2015.
  */
 public class BlackListService {
-    public ArrayList<SmsData> getSmsInfo() {
+    public ArrayList<MobileData> getSmsInfo() {
         return fetchBlackList();
     }
 
-    private ArrayList<SmsData> fetchBlackList() {
-        ArrayList<SmsData> smsDatas = new ArrayList<>();
+    private ArrayList<MobileData> fetchBlackList() {
+        ArrayList<MobileData> mobileDatas = new ArrayList<>();
 
         try {
             SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
@@ -27,11 +27,11 @@ public class BlackListService {
 
             if (c.moveToFirst() && c.getCount() > 0) {
                 while (!c.isAfterLast()) {
-                    SmsData smsData = new SmsData();
-                    smsData.setCallerName(c.getString(c.getColumnIndex("names")));
-                    smsData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
-                    smsData.setOtherString(c.getString(c.getColumnIndex("sms_id")));
-                    smsDatas.add(smsData);
+                    MobileData mobileData = new MobileData();
+                    mobileData.setCallerName(c.getString(c.getColumnIndex("names")));
+                    mobileData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
+                    mobileData.setOtherString(c.getString(c.getColumnIndex("sms_id")));
+                    mobileDatas.add(mobileData);
                     c.moveToNext();
                 }
 
@@ -45,6 +45,6 @@ public class BlackListService {
 
         }
 
-        return smsDatas;
+        return mobileDatas;
     }
 }

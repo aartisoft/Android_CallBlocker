@@ -26,11 +26,11 @@ import android.widget.TextView;
 
 import com.codersact.blocker.R;
 import com.codersact.blocker.adapter.BlackListAdapter;
-import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
+import com.codersact.blocker.adapter.LogNumberAdapter;
 import com.codersact.blocker.db.CommonDbMethod;
 import com.codersact.blocker.inbox.InboxService;
 import com.codersact.blocker.model.NumberData;
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 import com.codersact.blocker.utility.UtilityMethod;
 
 import java.util.ArrayList;
@@ -164,7 +164,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
                             openDialogLog("Cancel");
 
                         } else if(which == 2) {
-                            openManualEntryDilaog("Number", "Add", "Cancel");
+                            openManualEntryDialog("Number", "Add", "Cancel");
                         }
 
                     }
@@ -173,8 +173,8 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         builderSingle.show();
     }
 
-    private void openManualEntryDilaog(String message, String okButton, String cancelButton) {
-        final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialogCustom_Destructive);
+    private void openManualEntryDialog(String message, String okButton, String cancelButton) {
+        final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_retry);
         dialog.setCanceledOnTouchOutside(false);
@@ -222,22 +222,22 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
     }
 
     private void openDialogInbox(String cancelButton) {
-        final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialogCustom_Destructive);
+        final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_inbox);
         dialog.setCanceledOnTouchOutside(false);
 
         ListView listView = (ListView) dialog.findViewById(R.id.listViewInbox);
-        final ArrayList<SmsData> smsDatas = new InboxService().fetchInboxSms(getActivity());
+        final ArrayList<MobileData> mobileDatas = new InboxService().fetchInboxSms(getActivity());
 
         final ArrayList<NumberData> numberDatas = new ArrayList<>();
-        for (int i = 0; i < smsDatas.size(); i++) {
+        for (int i = 0; i < mobileDatas.size(); i++) {
             NumberData numberData = new NumberData();
-            numberData.setSenderNumber(smsDatas.get(i).getSmsAddress());
+            numberData.setSenderNumber(mobileDatas.get(i).getMobileNumber());
             numberDatas.add(numberData);
         }
 
-        InboxNumberDialogAdapter inboxNumberAdapter = new InboxNumberDialogAdapter(getActivity(), numberDatas);
+        LogNumberAdapter inboxNumberAdapter = new LogNumberAdapter(getActivity(), numberDatas);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
         btnCancel.setText(cancelButton);
@@ -245,7 +245,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToNumberBlacklist(smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
+                new CommonDbMethod(getActivity()).addToNumberBlacklist(mobileDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
                 UtilityMethod.blackListFragment(getActivity());
                 getActivity().setTitle("Black List");
                 dialog.dismiss();
@@ -267,7 +267,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
 
     private void openDialogLog(String cancelButton) {
-        final Dialog dialog = new Dialog(getActivity(), R.style.AlertDialogCustom_Destructive);
+        final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_inbox);
         dialog.setCanceledOnTouchOutside(false);
@@ -276,7 +276,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         ListView listView = (ListView) dialog.findViewById(R.id.listViewInbox);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
-        InboxNumberDialogAdapter inboxNumberAdapter = new InboxNumberDialogAdapter(getActivity(), getCallDetails());
+       LogNumberAdapter inboxNumberAdapter = new LogNumberAdapter(getActivity(), getCallDetails());
         btnCancel.setText(cancelButton);
         listView.setAdapter(inboxNumberAdapter);
         view.setText("Log");
@@ -304,52 +304,55 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
     }
 
     private ArrayList<NumberData> getCallDetails() {
-
         final ArrayList<NumberData> numberDatas = new ArrayList<>();
+        try {
+            StringBuffer sb = new StringBuffer();
+            Cursor managedCursor = getActivity().getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DATE + " DESC");
+            int number = managedCursor.getColumnIndex( CallLog.Calls.NUMBER );
+            int type = managedCursor.getColumnIndex( CallLog.Calls.TYPE );
+            int date = managedCursor.getColumnIndex( CallLog.Calls.DATE);
+            int duration = managedCursor.getColumnIndex( CallLog.Calls.DURATION);
+            sb.append("Call Details :");
+            while ( managedCursor.moveToNext() ) {
+                String callType = managedCursor.getString(type);
+                if (Integer.parseInt(callType) == CallLog.Calls.INCOMING_TYPE || Integer.parseInt(callType) == CallLog.Calls.MISSED_TYPE) {
+                    String phNumber = managedCursor.getString(number);
 
-        StringBuffer sb = new StringBuffer();
-        Cursor managedCursor = getActivity().managedQuery(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DATE + " DESC");
-        int number = managedCursor.getColumnIndex( CallLog.Calls.NUMBER );
-        int type = managedCursor.getColumnIndex( CallLog.Calls.TYPE );
-        int date = managedCursor.getColumnIndex( CallLog.Calls.DATE);
-        int duration = managedCursor.getColumnIndex( CallLog.Calls.DURATION);
-        sb.append("Call Details :");
-        while ( managedCursor.moveToNext() ) {
-            String callType = managedCursor.getString(type);
-            if (Integer.parseInt(callType) == CallLog.Calls.INCOMING_TYPE || Integer.parseInt(callType) == CallLog.Calls.MISSED_TYPE) {
-                String phNumber = managedCursor.getString(number);
+                    String callDate = managedCursor.getString(date);
+                    Date callDayTime = new Date(Long.valueOf(callDate));
+                    String callDuration = managedCursor.getString(duration);
+                    String dir = null;
+                    int dircode = Integer.parseInt( callType );
+                    switch( dircode ) {
+                        case CallLog.Calls.OUTGOING_TYPE:
+                            dir = "OUTGOING";
+                            break;
 
-                String callDate = managedCursor.getString(date);
-                Date callDayTime = new Date(Long.valueOf(callDate));
-                String callDuration = managedCursor.getString(duration);
-                String dir = null;
-                int dircode = Integer.parseInt( callType );
-                switch( dircode ) {
-                    case CallLog.Calls.OUTGOING_TYPE:
-                        dir = "OUTGOING";
-                        break;
+                        case CallLog.Calls.INCOMING_TYPE:
+                            dir = "INCOMING";
+                            break;
 
-                    case CallLog.Calls.INCOMING_TYPE:
-                        dir = "INCOMING";
-                        break;
+                        case CallLog.Calls.MISSED_TYPE:
+                            dir = "MISSED";
+                            break;
+                    }
 
-                    case CallLog.Calls.MISSED_TYPE:
-                        dir = "MISSED";
-                        break;
+                    NumberData numberData = new NumberData();
+                    numberData.setSenderNumber(phNumber);
+                    numberDatas.add(numberData);
+
+                    sb.append( "\n Phone Number:--- "+phNumber +" \n Call Type:--- "+dir+" \n Call Date:--- "+callDayTime+" \n Call duration in sec :--- "+callDuration );
+                    sb.append("\n----------------------------------");
                 }
 
-                NumberData numberData = new NumberData();
-                numberData.setSenderNumber(phNumber);
-                numberDatas.add(numberData);
 
-                sb.append( "\n Phone Number:--- "+phNumber +" \n Call Type:--- "+dir+" \n Call Date:--- "+callDayTime+" \n Call duration in sec :--- "+callDuration );
-                sb.append("\n----------------------------------");
             }
 
+            managedCursor.close();
+
+        } catch (Exception e) {
 
         }
-
-        managedCursor.close();
 
         return numberDatas;
 

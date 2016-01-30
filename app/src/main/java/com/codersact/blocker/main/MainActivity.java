@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -262,9 +263,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
+        try {
+            if (mAdView != null) {
+                mAdView.pause();
+            }
+        } catch (Exception e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+
         super.onPause();
     }
 
@@ -272,9 +278,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
+        try {
+            if (mAdView != null) {
+                mAdView.resume();
+            }
+        } catch (Exception e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+
     }
 
     /** Called before the activity is destroyed */

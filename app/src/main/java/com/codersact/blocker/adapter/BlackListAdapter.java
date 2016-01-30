@@ -13,13 +13,13 @@ import android.widget.TextView;
 import com.codersact.blocker.R;
 import com.codersact.blocker.blacklist.BlacklistView;
 import com.codersact.blocker.db.CommonDbMethod;
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
 
 public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.ViewHolder>{
-    private ArrayList<SmsData> mDataset = new ArrayList<>();
+    private ArrayList<MobileData> mDataset = new ArrayList<>();
     private Context context;
     private BlacklistView blacklistView;
 
@@ -40,7 +40,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BlackListAdapter(ArrayList<SmsData> myDataset, Context context) {
+    public BlackListAdapter(ArrayList<MobileData> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
     }
@@ -58,7 +58,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder,final int position) {
-        holder.mTextView.setText("" + mDataset.get(position).getSmsAddress());
+        holder.mTextView.setText("" + mDataset.get(position).getMobileNumber());
         holder.btnDelete.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -81,7 +81,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
     public void deleteItem(int position) {
         CommonDbMethod commonDbMethod = new CommonDbMethod(context);
-        commonDbMethod.deleteSms(mDataset.get(position).getSmsAddress(), "SMS_BlackList");
+        commonDbMethod.deleteBlackListNumber(mDataset.get(position).getMobileNumber(), "SMS_BlackList");
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());

@@ -3,7 +3,7 @@ package com.codersact.blocker.model;
 /**
  * Created by masum on 30/07/2015.
  */
-public class SmsData {
+public class MobileData {
     private String smsNo;
     private String smsString;
     private String smsAddress;
@@ -25,7 +25,7 @@ public class SmsData {
         this.smsString = smsString;
     }
 
-    public String getSmsAddress() {
+    public String getMobileNumber() {
         return smsAddress;
     }
 

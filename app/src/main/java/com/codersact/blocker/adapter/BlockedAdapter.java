@@ -1,9 +1,11 @@
 package com.codersact.blocker.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
-import android.media.AudioManager;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,32 +17,35 @@ import java.util.ArrayList;
 
 
 import com.codersact.blocker.R;
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.db.CommonDbMethod;
+import com.codersact.blocker.model.MobileData;
 
-public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
-    private ArrayList<SmsData> mDataset = new ArrayList<>();
+public class BlockedAdapter extends RecyclerView.Adapter<BlockedAdapter.ViewHolder>{
+    private ArrayList<MobileData> mDataset = new ArrayList<>();
     private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
         public TextView mTextDesc;
+        public CardView cardView;
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.person_name);
             mTextDesc = (TextView) v.findViewById(R.id.person_age);
+            cardView = (CardView) v.findViewById(R.id.cv);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public InboxAdapter(ArrayList<SmsData> myDataset, Context context) {
+    public BlockedAdapter(ArrayList<MobileData> myDataset, Context context) {
         mDataset = myDataset;
         this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public InboxAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BlockedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_sms_list, parent, false);
         // set the view's size, margins, paddings and layout parameters
@@ -51,67 +56,33 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder,final int position) {
-        holder.mTextView.setText(mDataset.get(position).getSmsAddress());
+        holder.mTextView.setText(mDataset.get(position).getMobileNumber());
         holder.mTextDesc.setText(mDataset.get(position).getOtherString());
-        holder.mTextDesc.setOnClickListener(new View.OnClickListener() {
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //new CommonDbMethod(context).addToNumberBlacklist(mDataset.get(position).getSmsId() , mDataset.get(position).getSmsThreadNo(), mDataset.get(position).getSmsAddress(), mDataset.get(position).getOtherString().trim());
-
-                delete_thread(mDataset.get(position).getSmsAddress());
-                //deleteSMSInProgress(context, mDataset.get(position).getSmsThreadNo());
+                new AlertDialog.Builder(context)
+                        .setTitle("Delete")
+                        .setMessage("Do you really want to delete?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                deleteLog(position);
+                            }})
+                        .setNegativeButton("NO", null).show();
             }
 
         });
 
     }
 
-    public static long getThreadIdFromAddress(Context context, String address) {
-        if (address == null)
-            return 0;
-
-        String THREAD_RECIPIENT_QUERY = "recipient";
-
-        Uri.Builder uriBuilder = Uri.parse("content://mms-sms/threadID").buildUpon();
-        uriBuilder.appendQueryParameter(THREAD_RECIPIENT_QUERY, address);
-
-        long threadId = 0;
-
-        Cursor cursor = context.getContentResolver().query(uriBuilder.build(), new String[] { "_id" }, null, null, null);
-        if (cursor != null) {
-            try {
-                if (cursor.moveToFirst()) {
-                    threadId = cursor.getLong(0);
-                }
-            }
-            finally {
-                cursor.close();
-            }
-        }
-        return threadId;
-    }
-
-    private static void deleteSMSInProgress(Context context, long thread_id) {
-        Uri inbox = Uri.parse("content://sms/inbox");
-        Cursor c = context.getContentResolver().query(inbox, null, null, null, "date desc");
-
-        Log.i("Timer Task", (c == null) + "  " + c.moveToFirst());
-        if (c == null || !c.moveToFirst()){
-            c.close();
-            return;
-        }
-
-        Log.i("Timer Task", "Delete IN PROGRESS");
-        String from = c.getString(c.getColumnIndex("address"));
-        c.close();
-
-        Uri thread = Uri.parse("content://sms/" + thread_id);
-        context.getContentResolver().delete(thread, null, null);
-        Log.i("Timer Task", "Delete Successful");
-
-        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+    private void deleteLog(int position) {
+        new CommonDbMethod(context).deleteLogNumber(mDataset.get(position).getOtherString(), mDataset.get(position).getMobileNumber(), "sms_blocked");
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataset.size());
 
     }
 

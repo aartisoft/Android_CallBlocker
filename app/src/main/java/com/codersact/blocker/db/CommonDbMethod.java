@@ -61,10 +61,27 @@ public class CommonDbMethod {
         //finish();
     }
 
-    public boolean deleteSms(final String number, final String tableName) {
+    public boolean deleteBlackListNumber(final String number, final String tableName) {
         try {
             SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
             db.delete(tableName, "numbers" + " = ?", new String[] {number});
+            //return true;
+
+            db.close();
+
+        } catch (Exception e) {
+            Log.e("Exception", "" + e.getMessage());
+            // return false;
+        }
+
+        return false;
+
+    }
+
+    public boolean deleteLogNumber(final String formattedDate, final String number, final String tableName) {
+        try {
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", null, SQLiteDatabase.OPEN_READWRITE);
+            db.delete(tableName, "numbers" + " = ? and body = ?", new String[] {number.trim(), formattedDate.trim()});
             //return true;
 
             db.close();

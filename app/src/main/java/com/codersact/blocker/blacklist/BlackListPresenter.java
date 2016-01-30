@@ -1,6 +1,6 @@
 package com.codersact.blocker.blacklist;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class BlackListPresenter {
         this.blackListService = blackListService;
     }
 
-    public ArrayList<SmsData> onSaveClick() {
+    public ArrayList<MobileData> onSaveClick() {
         String smsName = blacklistView.getSmsName();
         String smsNumber = blacklistView.getSmsNumber();
         return blackListService.getSmsInfo();
