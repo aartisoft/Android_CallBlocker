@@ -18,27 +18,29 @@ public class CommonDbMethod {
         this.context = context;
     }
 
-    public void addToSMSBlacklist(String id, String name, String number, String body) {
+    public void addToNumberBlacklist(String name, String number) {
         if (number.length() == 0) {
             Toast.makeText(context, "Please fill up both the fields", Toast.LENGTH_LONG).show();
             return;
         }
 
-        SQLiteDatabase db;
-        db = context.openOrCreateDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        db.setVersion(1);
-        db.setLocale(Locale.getDefault());
-        db.setLockingEnabled(true);
-        db.execSQL("create table IF NOT EXISTS SMS_BlackList(sms_id, names varchar(20), numbers varchar(20) UNIQUE)");
+        try {
 
-        // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
-        ContentValues values = new ContentValues();
-        values.put("sms_id", id);
-        values.put("names", name);
-        values.put("numbers", number);
-        //values.put("body", body);
+            SQLiteDatabase db;
+            db = context.openOrCreateDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+            db.setVersion(1);
+            db.setLocale(Locale.getDefault());
+            db.setLockingEnabled(true);
+            db.execSQL("create table IF NOT EXISTS SMS_BlackList(sms_id varchar(20), names varchar(20), numbers varchar(20) UNIQUE)");
 
-        db.insert("SMS_BlackList", null, values);
+            // Insert the "PhoneNumbers" into database-table, "SMS_BlackList"
+            ContentValues values = new ContentValues();
+            //values.put("sms_id", id);
+            values.put("names", name);
+            values.put("numbers", number);
+            //values.put("body", body);
+
+            db.insert("SMS_BlackList", null, values);
 
         /*if (db.insert("SMS_BlackList", null, values) == -1){
             Log.d("addToSMS_BlackList", "3: blockingCodeForSMS ");
@@ -47,11 +49,15 @@ public class CommonDbMethod {
             return;
         }*/
 
-        Log.d("addToSMS_BlackList", "4: blockingCodeForSMS ");
-        Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");
+            Log.d("addToSMS_BlackList", "4: blockingCodeForSMS ");
+            Log.d("addToSMS_BlackList", "5: blockingCodeForSMS ");
 
-        db.close();
-        Toast.makeText(context, number +" is added to blacklist", Toast.LENGTH_LONG).show();
+            db.close();
+            Toast.makeText(context, number + " is added to blacklist", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
         //finish();
     }
 
