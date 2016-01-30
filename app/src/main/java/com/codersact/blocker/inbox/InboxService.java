@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -15,8 +15,8 @@ import java.util.ArrayList;
  */
 public class InboxService {
 
-    public ArrayList<SmsData> fetchInboxSms(Context context) {
-        ArrayList<SmsData> smsDatas = new ArrayList<>();
+    public ArrayList<MobileData> fetchInboxSms(Context context) {
+        ArrayList<MobileData> mobileDatas = new ArrayList<>();
 
         Uri inboxURI = Uri.parse("content://sms/inbox");
 
@@ -35,7 +35,7 @@ public class InboxService {
         if (c.moveToFirst()) { // must check the result to prevent exception
             do {
                 String msgData = "";
-                SmsData smsData = new SmsData();
+                MobileData mobileData = new MobileData();
 
                 for(int idx=0;idx < c.getColumnCount();idx++)
                 {
@@ -43,23 +43,23 @@ public class InboxService {
                     Log.i("***mm", "*** " + msgData);
 
                     if (idx == 1) {
-                        smsData.setMobileNumber(c.getString(idx));
+                        mobileData.setMobileNumber(c.getString(idx));
                     }
 
                     if (idx == 2) {
-                        smsData.setOtherString(c.getString(idx));
+                        mobileData.setOtherString(c.getString(idx));
                     }
 
                     if (idx == 3) {
-                        smsData.setCallerName(c.getString(idx));
+                        mobileData.setCallerName(c.getString(idx));
                     }
                     if (idx == 4) {
-                        smsData.setSmsId(c.getString(idx));
+                        mobileData.setSmsId(c.getString(idx));
                     }
 
                 }
 
-                smsDatas.add(smsData);
+                mobileDatas.add(mobileData);
 
 
             } while (c.moveToNext());
@@ -68,7 +68,7 @@ public class InboxService {
             // empty box, no SMS
         }
 
-        return  smsDatas;
+        return mobileDatas;
     }
 
 }

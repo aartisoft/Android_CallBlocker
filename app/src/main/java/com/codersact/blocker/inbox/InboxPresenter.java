@@ -1,6 +1,6 @@
 package com.codersact.blocker.inbox;
 
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ public class InboxPresenter {
 
     }
 
-    public ArrayList<SmsData> onFetchList() {
-        ArrayList<SmsData> smsDatas = inboxService.fetchInboxSms(inboxView.getContext());
-        return smsDatas;
+    public ArrayList<MobileData> onFetchList() {
+        ArrayList<MobileData> mobileDatas = inboxService.fetchInboxSms(inboxView.getContext());
+        return mobileDatas;
     }
 
 }

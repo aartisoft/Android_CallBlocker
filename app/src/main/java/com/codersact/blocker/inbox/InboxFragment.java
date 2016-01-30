@@ -25,20 +25,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.codersact.blocker.R;
-import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
-import com.codersact.blocker.adapter.InboxAdapter;
+import com.codersact.blocker.adapter.LogNumberAdapter;
+import com.codersact.blocker.adapter.BlockedAdapter;
 
 import com.codersact.blocker.blacklist.BlackListFragment;
 import com.codersact.blocker.db.CommonDbMethod;
 import com.codersact.blocker.model.NumberData;
-import com.codersact.blocker.model.SmsData;
+import com.codersact.blocker.model.MobileData;
 
 public class InboxFragment extends Fragment implements View.OnClickListener, InboxView {
     private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView recyclerView;
     TextView textView;
     FloatingActionButton floatingActionButton;
-    ArrayList<SmsData> smsDatas = new ArrayList<>();
+    ArrayList<MobileData> mobileDatas = new ArrayList<>();
     InboxPresenter inboxPresenter;
 
     @Override
@@ -47,7 +47,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         View rootView = inflater.inflate(R.layout.fragment_inbox_sms, container, false);
         initView(rootView);
         inboxPresenter = new InboxPresenter(this, new InboxService());
-        InboxAdapter mAdapter = new InboxAdapter(inboxPresenter.onFetchList(), getActivity());
+        BlockedAdapter mAdapter = new BlockedAdapter(inboxPresenter.onFetchList(), getActivity());
         recyclerView.setAdapter(mAdapter);
 
         if (inboxPresenter.onFetchList().size() > 0) {
@@ -191,16 +191,16 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
         dialog.setCanceledOnTouchOutside(false);
 
         ListView listView = (ListView) dialog.findViewById(R.id.listViewInbox);
-        final ArrayList<SmsData> smsDatas = new InboxService().fetchInboxSms(getActivity());
+        final ArrayList<MobileData> mobileDatas = new InboxService().fetchInboxSms(getActivity());
 
         final ArrayList<NumberData> numberDatas = new ArrayList<>();
-        for (int i = 0; i < smsDatas.size(); i++) {
+        for (int i = 0; i < mobileDatas.size(); i++) {
             NumberData numberData = new NumberData();
-            numberData.setSenderNumber(smsDatas.get(i).getSmsAddress());
+            numberData.setSenderNumber(mobileDatas.get(i).getMobileNumber());
             numberDatas.add(numberData);
         }
 
-        InboxNumberDialogAdapter inboxNumberAdapter = new InboxNumberDialogAdapter(getActivity(), numberDatas);
+        LogNumberAdapter inboxNumberAdapter = new LogNumberAdapter(getActivity(), numberDatas);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
         btnCancel.setText(cancelButton);
@@ -208,7 +208,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener, Inb
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToNumberBlacklist(smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
+                new CommonDbMethod(getActivity()).addToNumberBlacklist(mobileDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
                 dialog.dismiss();
                 blackListFragment();
                 getActivity().setTitle("black list");
