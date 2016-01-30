@@ -28,9 +28,9 @@ public class BlackListService {
             if (c.moveToFirst() && c.getCount() > 0) {
                 while (!c.isAfterLast()) {
                     SmsData smsData = new SmsData();
-                    smsData.setSmsThreadId(c.getString(c.getColumnIndex("names")));
-                    smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
-                    smsData.setSmsString("");
+                    smsData.setCallerName(c.getString(c.getColumnIndex("names")));
+                    smsData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
+                    smsData.setOtherString(c.getString(c.getColumnIndex("sms_id")));
                     smsDatas.add(smsData);
                     c.moveToNext();
                 }

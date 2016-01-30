@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import activity.masum.com.smsblock.R;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.model.SmsData;
 
 public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
@@ -52,12 +52,12 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder,final int position) {
         holder.mTextView.setText(mDataset.get(position).getSmsAddress());
-        holder.mTextDesc.setText(mDataset.get(position).getSmsString());
+        holder.mTextDesc.setText(mDataset.get(position).getOtherString());
         holder.mTextDesc.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //new CommonDbMethod(context).addToSMSBlacklist(mDataset.get(position).getSmsId() , mDataset.get(position).getSmsThreadNo(), mDataset.get(position).getSmsAddress(), mDataset.get(position).getSmsString().trim());
+                //new CommonDbMethod(context).addToNumberBlacklist(mDataset.get(position).getSmsId() , mDataset.get(position).getSmsThreadNo(), mDataset.get(position).getSmsAddress(), mDataset.get(position).getOtherString().trim());
 
                 delete_thread(mDataset.get(position).getSmsAddress());
                 //deleteSMSInProgress(context, mDataset.get(position).getSmsThreadNo());

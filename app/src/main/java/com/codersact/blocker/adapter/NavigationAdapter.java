@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.model.NavigationMenu;
-import activity.masum.com.smsblock.R;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
     private ArrayList<NavigationMenu> mDataset = new ArrayList<>();

@@ -43,15 +43,15 @@ public class InboxService {
                     Log.i("***mm", "*** " + msgData);
 
                     if (idx == 1) {
-                        smsData.setSmsAddress(c.getString(idx));
+                        smsData.setMobileNumber(c.getString(idx));
                     }
 
                     if (idx == 2) {
-                        smsData.setSmsString(c.getString(idx));
+                        smsData.setOtherString(c.getString(idx));
                     }
 
                     if (idx == 3) {
-                        smsData.setSmsThreadId(c.getString(idx));
+                        smsData.setCallerName(c.getString(idx));
                     }
                     if (idx == 4) {
                         smsData.setSmsId(c.getString(idx));

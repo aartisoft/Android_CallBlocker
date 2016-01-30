@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.blacklist.BlacklistView;
 import com.codersact.blocker.db.CommonDbMethod;
 import com.codersact.blocker.model.SmsData;
 
 import java.util.ArrayList;
 
-import activity.masum.com.smsblock.R;
 
 public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.ViewHolder>{
     private ArrayList<SmsData> mDataset = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.codersact.blocker.blockedsms;
+package com.codersact.blocker.blockedlist;
 
 import android.app.Dialog;
 import android.app.Fragment;
@@ -25,9 +25,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
 import com.codersact.blocker.adapter.InboxAdapter;
-import activity.masum.com.smsblock.R;
 
 import com.codersact.blocker.blacklist.BlackListFragment;
 import com.codersact.blocker.db.CommonDbMethod;
@@ -143,7 +143,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", "", editText.getText().toString().trim(), "");
+                new CommonDbMethod(getActivity()).addToNumberBlacklist("Name", editText.getText().toString().trim());
                 dialog.dismiss();
                 blackListFragment();
             }
@@ -195,7 +195,7 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber(), "");
+                new CommonDbMethod(getActivity()).addToNumberBlacklist(smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
                 dialog.dismiss();
                 blackListFragment();
                 //Toast.makeText(getActivity(), "Position" + numberDatas.get(position).getSenderNumber(), Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.codersact.blocker.blockedsms;
+package com.codersact.blocker.blockedlist;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,9 +29,9 @@ public class BlockedListService {
             if (c.moveToFirst() && c.getCount() > 0) {
                 while (!c.isAfterLast()) {
                     SmsData smsData = new SmsData();
-                    smsData.setSmsThreadId(c.getString(c.getColumnIndex("names")));
-                    smsData.setSmsAddress(c.getString(c.getColumnIndex("numbers")));
-                    smsData.setSmsString(c.getString(c.getColumnIndex("body")));
+                    smsData.setCallerName(c.getString(c.getColumnIndex("names")));
+                    smsData.setMobileNumber(c.getString(c.getColumnIndex("numbers")));
+                    smsData.setOtherString(c.getString(c.getColumnIndex("body")));
                     smsDatas.add(smsData);
                     c.moveToNext();
                 }

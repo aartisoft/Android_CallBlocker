@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.adapter.BlackListAdapter;
 import com.codersact.blocker.adapter.InboxNumberDialogAdapter;
 import com.codersact.blocker.db.CommonDbMethod;
@@ -35,7 +36,6 @@ import com.codersact.blocker.utility.UtilityMethod;
 import java.util.ArrayList;
 import java.util.Date;
 
-import activity.masum.com.smsblock.R;
 
 public class BlackListFragment extends Fragment implements View.OnClickListener, BlacklistView {
     private RecyclerView.LayoutManager mLayoutManager;
@@ -133,16 +133,14 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
     }
 
 
-
-
     private void openActionDialog() {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom_Destructive);
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
         //builderSingle.setIcon(R.drawable.about);
         builderSingle.setTitle("Add From Sender");
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_selectable_list_item);
-        arrayAdapter.add("From Inbox");
-        arrayAdapter.add("From Log");
-        arrayAdapter.add("Manual Entry");
+        arrayAdapter.add("     From Inbox");
+        arrayAdapter.add("     From Log");
+        arrayAdapter.add("     Manual Entry");
 
         builderSingle.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
@@ -193,7 +191,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", "", editText.getText().toString().trim(), "");
+                new CommonDbMethod(getActivity()).addToNumberBlacklist("", editText.getText().toString().trim());
                 UtilityMethod.blackListFragment(getActivity());
                 getActivity().setTitle("Black List");
                 dialog.dismiss();
@@ -247,7 +245,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber(), "");
+                new CommonDbMethod(getActivity()).addToNumberBlacklist(smsDatas.get(position).getSmsThreadNo(), numberDatas.get(position).getSenderNumber());
                 UtilityMethod.blackListFragment(getActivity());
                 getActivity().setTitle("Black List");
                 dialog.dismiss();
@@ -285,7 +283,7 @@ public class BlackListFragment extends Fragment implements View.OnClickListener,
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                new CommonDbMethod(getActivity()).addToSMSBlacklist("", getCallDetails().get(position).getSenderNumber(), getCallDetails().get(position).getSenderNumber(), "");
+                new CommonDbMethod(getActivity()).addToNumberBlacklist(getCallDetails().get(position).getSenderNumber(), getCallDetails().get(position).getSenderNumber());
                 UtilityMethod.blackListFragment(getActivity());
                 getActivity().setTitle("Black List");
                 dialog.dismiss();

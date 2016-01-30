@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.model.NumberData;
 
 import java.util.ArrayList;
 
-import activity.masum.com.smsblock.R;
 
 public class InboxNumberDialogAdapter extends BaseAdapter {
     private ArrayList<NumberData> optionDataArrayList;

@@ -1,4 +1,4 @@
-package com.codersact.blocker.blockedsms;
+package com.codersact.blocker.blockedlist;
 
 import com.codersact.blocker.model.SmsData;
 
