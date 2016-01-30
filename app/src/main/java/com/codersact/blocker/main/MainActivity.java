@@ -2,7 +2,6 @@ package com.codersact.blocker.main;
 
 import android.app.Dialog;
 import android.app.FragmentManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -19,9 +18,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.adapter.NavigationAdapter;
 import com.codersact.blocker.blacklist.BlackListFragment;
-import com.codersact.blocker.blockedsms.BlockedListFragment;
+import com.codersact.blocker.blockedlist.BlockedListFragment;
 import com.codersact.blocker.inbox.InboxFragment;
 import com.codersact.blocker.model.NavigationMenu;
 import com.codersact.blocker.utility.UtilityMethod;
@@ -29,10 +29,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-import activity.masum.com.smsblock.R;
-
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     RecyclerView navigationRecylerView;
@@ -64,18 +60,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setClickListener();
         blackListFragment();
         getSupportActionBar().setTitle("Black List");
-        //alterTable();
-
-    }
-
-    public void alterTable() {
-        SQLiteDatabase db;
-        db = getApplicationContext().openOrCreateDatabase("/data/data/com.codersact.blocker/databases/BlackListDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-        db.setVersion(1);
-        db.setLocale(Locale.getDefault());
-        //db.setLockingEnabled(true);
-
-        db.execSQL("ALTER TABLE " + "sms_blocked" + " ADD COLUMN " + " id integer primary key autoincrement");
     }
 
     private void setClickListener() {
@@ -120,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         setTitle(navigationMenus.get(2).getMenuName());
 
                     } else if (recyclerView.getChildPosition(child) == 3) {
-                        openDialogAbout("", "ACCEPT", "CANCEL");
+                        openDialogAbout("Something went wrong!", "ACCEPT", "CANCEL");
                         /*inboxFragment();
                         setTitle(navigationMenus.get(3).getMenuName());*/
 
@@ -168,10 +152,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         NavigationMenu navigationMenu3 = new NavigationMenu();
         navigationMenu3.setMenuName("About");
         navigationMenus.add(navigationMenu3);
-
-//        NavigationMenu navigationMenu4 = new NavigationMenu();
-//        navigationMenu4.setMenuName("Settings");
-//        navigationMenus.add(navigationMenu4);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationRecylerView = (RecyclerView) findViewById(R.id.listView);
@@ -258,8 +238,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         dialog.setCanceledOnTouchOutside(false);
 
         ImageButton imgBtnClose = (ImageButton) dialog.findViewById(R.id.imgBtnClose);
-
-
         imgBtnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

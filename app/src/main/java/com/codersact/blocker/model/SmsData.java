@@ -13,15 +13,15 @@ public class SmsData {
         return smsNo;
     }
 
-    public void setSmsThreadId(String smsNo) {
+    public void setCallerName(String smsNo) {
         this.smsNo = smsNo;
     }
 
-    public String getSmsString() {
+    public String getOtherString() {
         return smsString;
     }
 
-    public void setSmsString(String smsString) {
+    public void setOtherString(String smsString) {
         this.smsString = smsString;
     }
 
@@ -29,7 +29,7 @@ public class SmsData {
         return smsAddress;
     }
 
-    public void setSmsAddress(String smsAddress) {
+    public void setMobileNumber(String smsAddress) {
         this.smsAddress = smsAddress;
     }
 

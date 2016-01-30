@@ -7,9 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import com.codersact.blocker.R;
 import com.codersact.blocker.blacklist.BlackListFragment;
 
-import activity.masum.com.smsblock.R;
 
 /**
  * Created by masum on 11/08/2015.
