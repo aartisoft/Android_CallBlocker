@@ -131,13 +131,13 @@ public class BlockingProcessReceiver extends BroadcastReceiver {
             Log.i("checkBlackList", "c.moveToFirst(): " + c.moveToFirst() + "  c.getCount(): " + c.getCount());
 
             if (c.moveToFirst() && c.getCount() > 0) {
-                AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                manager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                //AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                //manager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
                 disconnectPhoneiTelephony(context); // call disconnect
                 saveIncomingBlockedNumber(context, "Call blocked ", mobileNumber, createdDate);
                 pushNotification(mobileNumber);
 
-                manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                //manager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
                 c.close();
                 db.close();

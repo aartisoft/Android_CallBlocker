@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 
 import com.codersact.blocker.R;
+import com.codersact.blocker.adapter.BlackListAdapter;
 import com.codersact.blocker.adapter.LogNumberAdapter;
 import com.codersact.blocker.adapter.BlockedAdapter;
 
@@ -51,12 +52,14 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
         blockedListPresenter = new BlockedListPresenter(this, new BlockedListService());
         BlockedAdapter mAdapter = new BlockedAdapter(blockedListPresenter.onFetchClick(), getActivity());
         recyclerView.setAdapter(mAdapter);
+        setEmptyMessage(blockedListPresenter.onFetchClick().size());
 
-        if (blockedListPresenter.onFetchClick().size() > 0) {
-            textView.setVisibility(View.GONE);
-        } else {
-            textView.setVisibility(View.VISIBLE);
-        }
+        mAdapter.setOnDataChangeListener(new BlockedAdapter.OnDataChangeListener() {
+            @Override
+            public void onDataChanged(int size) {
+                setEmptyMessage(size);
+            }
+        });
 
         return rootView;
     }
@@ -73,6 +76,13 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
 
     }
 
+    public void setEmptyMessage(int size) {
+        if (size > 0) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -97,11 +107,6 @@ public class BlockedListFragment extends Fragment implements View.OnClickListene
                 break;
 
         }
-    }
-
-    @Override
-    public void getSmsInfo() {
-
     }
 
     @Override

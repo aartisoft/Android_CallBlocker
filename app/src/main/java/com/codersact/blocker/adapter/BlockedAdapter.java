@@ -83,6 +83,7 @@ public class BlockedAdapter extends RecyclerView.Adapter<BlockedAdapter.ViewHold
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());
+        doButtonOneClickActions();
 
     }
 
@@ -116,4 +117,20 @@ public class BlockedAdapter extends RecyclerView.Adapter<BlockedAdapter.ViewHold
     public int getItemCount() {
         return mDataset.size();
     }
+
+    private void doButtonOneClickActions() {
+        if(mOnDataChangeListener != null){
+            mOnDataChangeListener.onDataChanged(mDataset.size());
+        }
+    }
+
+    OnDataChangeListener mOnDataChangeListener;
+    public void setOnDataChangeListener(OnDataChangeListener onDataChangeListener){
+        mOnDataChangeListener = onDataChangeListener;
+    }
+
+    public interface OnDataChangeListener{
+        void onDataChanged(int size);
+    }
+
 }
