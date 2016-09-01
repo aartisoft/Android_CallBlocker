@@ -23,7 +23,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
     private Context context;
     private BlacklistView blacklistView;
 
-    // Provide a reference to the views for each data item
+    // ///Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
