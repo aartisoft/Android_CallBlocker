@@ -1,5 +1,7 @@
 package com.codersact.blocker.model;
 
+import android.content.Context;
+
 /**
  * Created by masum on 30/07/2015.
  */
@@ -9,7 +11,7 @@ public class MobileData {
     private String smsAddress;
     private String smsId;
 
-    public String getSmsThreadNo() {
+      public String getSmsThreadNo() {
         return smsNo;
     }
 
